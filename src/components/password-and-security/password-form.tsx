@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/button'
 import { Form } from '~/components/ui/form'
 import { PasswordFormField } from '~/components/password-and-security/password-form-field'
 
-export interface FormDataType {
+export type FormDataType = {
   currentPassword: string
   newPassword: string
   newPasswordConfirm: string

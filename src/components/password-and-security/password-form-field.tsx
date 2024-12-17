@@ -11,7 +11,7 @@ import { Input } from '~/components/ui/input'
 import { Control } from 'react-hook-form'
 import { FormDataType } from './password-form'
 
-interface FormProps {
+type FormProps = {
   control: Control<FormDataType>
   name: keyof FormDataType
   label: string
