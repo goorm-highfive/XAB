@@ -8,9 +8,7 @@ function ProfileInfo() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
-        <div className="user-img mr-4 h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-          {/* <img src="" alt="프로필 이미지" /> */}
-        </div>
+        <div className="user-img mr-4 h-20 w-20 overflow-hidden rounded-full"></div>
         <Button variant="outline">Change Photo</Button>
       </CardHeader>
       <CardContent>
