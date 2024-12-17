@@ -5,8 +5,20 @@ import { Button } from '~/components/ui/button'
 import { Form } from '~/components/ui/form'
 import { PasswordFormField } from '~/components/password-and-security/password-form-field'
 
+export interface FormDataType {
+  currentPassword: string
+  newPassword: string
+  newPasswordConfirm: string
+}
+
 function PasswordForm() {
-  const form = useForm()
+  const form = useForm<FormDataType>({
+    defaultValues: {
+      currentPassword: '',
+      newPassword: '',
+      newPasswordConfirm: '',
+    },
+  })
 
   return (
     <Form {...form}>
