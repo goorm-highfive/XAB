@@ -2,24 +2,18 @@ import Link from 'next/link'
 import { Button } from '~/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 
-type HeaderPrevTypeProps = {
-  pageTitle: string
-}
-
-function HeaderPrevType({ pageTitle }: HeaderPrevTypeProps) {
+function HeaderPrevType({ pageTitle }: { pageTitle: string }) {
   return (
-    <header className="border-b border-gray-200 px-4">
+    <header className="border-b px-4">
       <div className="mx-auto flex h-[65px] max-w-screen-xl flex-row items-center justify-between">
         <div className="left">
           <Link href="/" className="flex flex-row items-center">
-            <ArrowLeft size={18} color="#525252" className="mr-4" />
-            <span className="leading-1 text-xl font-semibold">{pageTitle}</span>
+            <ArrowLeft size={18} className="mr-4" />
+            <b className="text-xl">{pageTitle}</b>
           </Link>
         </div>
         <div className="right">
-          <Button type="submit" className="w-[128px]">
-            Save Changes
-          </Button>
+          <Button>Save Changes</Button>
         </div>
       </div>
     </header>

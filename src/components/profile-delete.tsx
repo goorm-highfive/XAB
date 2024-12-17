@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { Button } from '~/components/ui/button'
+import { CustomAlertDialog } from '~/components/common/custom-alert-dialog'
 
 function ProfileDelete() {
   return (
@@ -18,7 +18,13 @@ function ProfileDelete() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Button>Delete Account</Button>
+        <CustomAlertDialog
+          alertTitle="Are you sure you want to delete your account?"
+          description="This action is permanent and cannot be undone."
+          triggerBtnText="Delete Account"
+          cancelBtnText="Cancel"
+          actionBtnText="Continue"
+        />
       </CardContent>
     </Card>
   )

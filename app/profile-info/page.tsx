@@ -1,7 +1,7 @@
-import { HeaderPrevType } from '~/components/HeaderPrevType'
-import { ProfileEditLayout } from '~/components/ProfileEditLayout'
-import { ProfileInfo } from '~/components/ProfileInfo'
-import { ProfileDelete } from '~/components/ProfileDelete'
+import { HeaderPrevType } from '~/components/header-prev-type'
+import { ProfileEditLayout } from '~/components/profile-edit-layout'
+import { ProfileInfo } from '~/components/profile-info'
+import { ProfileDelete } from '~/components/profile-delete'
 
 function ProfileInfoPage() {
   return (
