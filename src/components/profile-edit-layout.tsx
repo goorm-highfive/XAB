@@ -1,3 +1,4 @@
+// 개인정보 페이지 : 콘텐츠 공통 레이아웃 설정
 function ProfileEditLayout({
   contentTitle,
   children,

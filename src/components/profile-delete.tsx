@@ -7,6 +7,7 @@ import {
 } from '~/components/ui/card'
 import { CustomAlertDialog } from '~/components/common/custom-alert-dialog'
 
+// 개인정보 페이지 : 계정 삭제
 function ProfileDelete() {
   return (
     <Card>

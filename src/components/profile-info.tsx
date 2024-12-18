@@ -6,11 +6,12 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
 
+// 개인정보 페이지 : 사용자 정보 변경 부분
 function ProfileInfo() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
-        <div className="user-img mr-4 h-20 w-20 overflow-hidden rounded-full">
+        <div className="mr-4 h-20 w-20 overflow-hidden rounded-full">
           <Image src={defaultProfileImg} alt="" />
         </div>
         <Button variant="outline">Change Photo</Button>
