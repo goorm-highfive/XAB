@@ -1,4 +1,5 @@
 import { Bell, User } from 'lucide-react'
+import Image from 'next/image'
 import { Button } from '~/components/ui/button'
 
 function Navbar() {
@@ -6,7 +7,7 @@ function Navbar() {
     <nav className="flex items-center justify-between bg-white p-4 shadow-sm">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <img src="/xAB.svg" alt="Website Logo" />
+        <Image src="/xAB.svg" alt="Website Logo" />
       </div>
 
       {/* Navbar 메뉴 */}

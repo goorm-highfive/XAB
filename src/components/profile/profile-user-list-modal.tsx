@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import type { User } from '~/types/user'
 
 import {
   Dialog,
@@ -12,11 +13,16 @@ import {
 import { SearchBar } from '~/components/profile/profile-search-bar'
 import { UserFollowList } from '~/components/profile/profile-user-follow-list'
 
-interface User {
+// API 응답 데이터 타입 정의
+interface UserListResponseItem {
   id: number
   name: string
+  username?: string
+  isFollowing?: boolean
+  image?: string
 }
 
+// UserListModalProps 타입 정의
 interface UserListModalProps {
   title: string
   apiEndpoint: string
@@ -42,9 +48,21 @@ function UserListModal({ title, apiEndpoint }: UserListModalProps) {
       try {
         const response = await fetch(apiEndpoint)
         if (!response.ok) throw new Error('Failed to fetch data')
-        const data = await response.json()
-        setUsers(data)
-        setFilteredUsers(data)
+
+        // API 응답 데이터 타입 명시
+        const data: UserListResponseItem[] = await response.json()
+
+        // User 타입으로 변환
+        const formattedData: User[] = data.map((item) => ({
+          id: item.id,
+          name: item.name,
+          username: item.username || 'Unknown',
+          isFollowing: item.isFollowing || false,
+          image: item.image || undefined,
+        }))
+
+        setUsers(formattedData)
+        setFilteredUsers(formattedData)
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message)
@@ -67,7 +85,7 @@ function UserListModal({ title, apiEndpoint }: UserListModalProps) {
   }
 
   const handleClose = () => {
-    router.back() // 모달 닫기 시 이전 페이지로 돌아감
+    router.back()
   }
 
   return (

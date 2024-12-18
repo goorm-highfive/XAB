@@ -2,14 +2,7 @@
 import React from 'react'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/utils/cn'
-
-type User = {
-  id: number
-  name: string
-  username: string
-  isFollowing: boolean
-  image?: string
-}
+import type { User } from '~/types/user'
 
 function UserFollowList({ users }: { users: User[] }) {
   const toggleFollow = (id: number) => {
