@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,16 @@ import {
 } from '~/components/ui/dialog' // Shadcn Dialog
 import { SearchBar } from '~/components/profile/profile-search-bar'
 import { UserFollowList } from '~/components/profile/profile-user-follow-list'
-import { User, UserListModalProps } from '~/types/profile' // 타입 불러오기
+
+interface User {
+  id: number
+  name: string
+}
+
+interface UserListModalProps {
+  title: string
+  apiEndpoint: string
+}
 
 function LoadingIndicator() {
   return <p className="text-center">Loading...</p>

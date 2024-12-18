@@ -1,9 +1,4 @@
-import ProfilePage from '#/profile/page'
 function Default() {
-  return (
-    <div>
-      <ProfilePage />
-    </div>
-  )
+  return <div></div>
 }
 export default Default
