@@ -1,6 +1,6 @@
 import { ProfileHeader } from '~/components/profile/profile-header'
 import { SurveyCard } from '~/components/profile/profile-survey-card'
-import { Navbar } from '~/components/profile/profile-nav-bar'
+import { Navbar } from '~/components/common/nav-bar'
 
 function ProfilePage() {
   return (
