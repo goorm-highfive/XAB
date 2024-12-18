@@ -1,13 +1,14 @@
-import { PostCommentItem } from '~/components/post-comment-Item'
+import { PostArticle } from '~/components/post-article'
+import { PostComment } from '~/components/post-comment'
 import { PostCommentInput } from '~/components/post-comment-input'
-import { PostView } from '~/components/post-view'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 
+// 게시글 뷰페이지
 function PostDetailPage() {
   return (
     <div className="mx-auto h-screen max-w-[1248px]">
       <section>
-        <PostView />
+        <PostArticle />
       </section>
       <section className="mt-6">
         <Card>
@@ -15,14 +16,8 @@ function PostDetailPage() {
             <CardTitle>Comments (89)</CardTitle>
           </CardHeader>
           <CardContent>
-            <PostCommentItem
-              writer={'Alex Thompson'}
-              message={'내용 1'}
-            ></PostCommentItem>
-            <PostCommentItem
-              writer={'Emily Chen'}
-              message={'내용 2'}
-            ></PostCommentItem>
+            <PostComment />
+            <PostComment />
             <PostCommentInput />
           </CardContent>
         </Card>

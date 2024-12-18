@@ -18,7 +18,7 @@ type CustomAlertDialogProps = {
   description?: string
   cancelBtnText?: string
   actionBtnText: string
-  onActionClick?: () => void // 클릭 시 실행될 함수
+  onActionClick?: () => void // 클릭 시 실행될 함수(이벤트)
 }
 
 const CustomAlertDialog = ({
@@ -27,7 +27,7 @@ const CustomAlertDialog = ({
   description,
   cancelBtnText,
   actionBtnText,
-  onActionClick, // 함수 전달 받기
+  onActionClick,
 }: CustomAlertDialogProps) => {
   return (
     <AlertDialog>
