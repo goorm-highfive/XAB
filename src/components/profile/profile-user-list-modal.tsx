@@ -10,16 +10,7 @@ import {
 import { SearchBar } from '~/components/profile/profile-search-bar'
 import { UserFollowList } from '~/components/profile/profile-user-follow-list'
 import { useRouter } from 'next/navigation'
-
-interface User {
-  id: number
-  name: string
-}
-
-interface UserListModalProps {
-  title: string
-  apiEndpoint: string
-}
+import { User, UserListModalProps } from '~/types/profile' // 타입 불러오기
 
 function LoadingIndicator() {
   return <p className="text-center">Loading...</p>
