@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Button } from '~/components/ui/button'
 import Logo from '~/assets/svgs/logo.svg'
 
-function Navbar() {
+function SiteHeader() {
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4">
@@ -29,4 +29,4 @@ function Navbar() {
   )
 }
 
-export { Navbar }
+export { SiteHeader }

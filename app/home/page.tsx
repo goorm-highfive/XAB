@@ -1,12 +1,12 @@
 import { ProfileSection } from '~/components/home/profile-section'
 import { SuggestSection } from '~/components/home/suggest-section'
-import { Navbar } from '~/components/profile/profile-nav-bar'
+import { SiteHeader } from '~/components/common/site-header'
 import { SurveyCard } from '~/components/profile/profile-survey-card'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
+      <SiteHeader />
       <div className="mx-auto max-w-screen-2xl items-start gap-6 p-6 lg:flex">
         <ProfileSection />
         <div className="flex-1 space-y-6">
