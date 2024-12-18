@@ -4,6 +4,7 @@ import { CircleUserRound } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 
 function NotifyItem() {
+  // 데이터를 props로 받아 출력
   return (
     <Link href="/">
       <Alert className="my-4 flex justify-between p-4">
@@ -13,14 +14,16 @@ function NotifyItem() {
           </div>
           <div>
             <AlertTitle className="text-base font-semibold">
-              Alex Morgan
+              Alex Morgan {/*이름*/}
             </AlertTitle>
             <AlertDescription className="text-sm text-muted-foreground">
-              like your post
+              like your post {/*액션*/}
             </AlertDescription>
           </div>
         </div>
-        <div className="text-xs text-muted-foreground">2024.12.18</div>
+        <div className="text-xs text-muted-foreground">
+          2024.12.18 {/*날짜*/}
+        </div>
       </Alert>
     </Link>
   )
