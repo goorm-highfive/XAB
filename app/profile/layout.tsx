@@ -1,4 +1,4 @@
-export default function ProfileLayout({
+function ProfileLayout({
   children,
   modal,
 }: {
@@ -12,3 +12,5 @@ export default function ProfileLayout({
     </div>
   )
 }
+
+export default ProfileLayout

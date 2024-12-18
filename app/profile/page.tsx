@@ -1,8 +1,8 @@
-import { ProfileHeader } from '../../src/components/profile/profile-header'
-import { SurveyCard } from '../../src/components/profile/profile-survey-card'
-import { Navbar } from '../../src/components/profile/profile-nav-bar'
+import { ProfileHeader } from '~/components/profile/profile-header'
+import { SurveyCard } from '~/components/profile/profile-survey-card'
+import { Navbar } from '~/components/profile/profile-nav-bar'
 
-export default function ProfilePage() {
+function ProfilePage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
@@ -32,3 +32,5 @@ export default function ProfilePage() {
     </div>
   )
 }
+
+export default ProfilePage

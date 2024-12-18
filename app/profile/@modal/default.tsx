@@ -1,8 +1,9 @@
-import ProfilePage from '../page'
-export default function Default() {
+import ProfilePage from '#/profile/page'
+function Default() {
   return (
     <div>
-      <ProfilePage></ProfilePage>
+      <ProfilePage />
     </div>
   )
 }
+export default Default
