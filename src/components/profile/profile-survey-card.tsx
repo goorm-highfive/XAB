@@ -12,7 +12,7 @@ type SurveyCardProps = {
   totalVotes: number
 }
 
-export const SurveyCard = ({
+function SurveyCard({
   date,
   question,
   optionA,
@@ -20,7 +20,7 @@ export const SurveyCard = ({
   votesA,
   votesB,
   totalVotes,
-}: SurveyCardProps) => {
+}: SurveyCardProps) {
   return (
     <Card className="mb-4 p-6 shadow-sm">
       <div className="mb-4 flex items-center gap-2">
@@ -64,3 +64,5 @@ export const SurveyCard = ({
     </Card>
   )
 }
+
+export { SurveyCard }

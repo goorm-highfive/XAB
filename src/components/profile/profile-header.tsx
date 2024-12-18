@@ -1,7 +1,7 @@
 import { Button } from '~/components/ui/button'
 import Link from 'next/link'
 
-export const ProfileHeader = () => {
+function ProfileHeader() {
   return (
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/*Avatar*/}
@@ -42,3 +42,4 @@ export const ProfileHeader = () => {
     </div>
   )
 }
+export { ProfileHeader }

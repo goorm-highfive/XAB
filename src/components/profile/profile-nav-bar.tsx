@@ -1,7 +1,7 @@
 import { Bell, User } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
-export const Navbar = () => {
+function Navbar() {
   return (
     <nav className="flex items-center justify-between bg-white p-4 shadow-sm">
       {/* Logo */}
@@ -34,3 +34,5 @@ export const Navbar = () => {
     </nav>
   )
 }
+
+export { Navbar }

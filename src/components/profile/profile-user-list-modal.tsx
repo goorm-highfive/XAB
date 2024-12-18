@@ -14,7 +14,6 @@ import { useRouter } from 'next/navigation'
 interface User {
   id: number
   name: string
-  // 다른 필요한 속성 추가
 }
 
 interface UserListModalProps {
@@ -30,10 +29,7 @@ function ErrorIndicator({ message }: { message: string }) {
   return <p className="text-center text-red-500">{message}</p>
 }
 
-export default function UserListModal({
-  title,
-  apiEndpoint,
-}: UserListModalProps) {
+function UserListModal({ title, apiEndpoint }: UserListModalProps) {
   const [users, setUsers] = useState<User[]>([])
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -96,3 +92,5 @@ export default function UserListModal({
     </Dialog>
   )
 }
+
+export { UserListModal }

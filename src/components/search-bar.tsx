@@ -5,7 +5,7 @@ import { Input } from '~/components/ui/input' // Shadcn UI Input 컴포넌트
 import { Button } from '~/components/ui/button' // Shadcn UI Button 컴포넌트
 import { Search } from 'lucide-react' // 아이콘 라이브러리 사용
 
-const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
+function SearchBar({ onSearch }: { onSearch: (query: string) => void }) {
   const [query, setQuery] = useState('')
 
   const handleSearch = () => {

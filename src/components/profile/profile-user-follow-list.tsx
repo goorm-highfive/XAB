@@ -11,7 +11,7 @@ type User = {
   image?: string
 }
 
-export const UserFollowList = ({ users }: { users: User[] }) => {
+function UserFollowList({ users }: { users: User[] }) {
   const toggleFollow = (id: number) => {
     console.log(`Toggling follow state for user ${id}`)
   }
@@ -51,3 +51,5 @@ export const UserFollowList = ({ users }: { users: User[] }) => {
     </div>
   )
 }
+
+export { UserFollowList }
