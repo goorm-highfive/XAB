@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button'
 
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between bg-white p-4 shadow-sm">
+    <nav className="sticky top-0 z-50 flex items-center justify-between bg-white p-4 shadow-sm">
       {/* Logo */}
       <div className="flex items-center gap-2">
         <Image src="/xAB.svg" width={32} height={32} alt="Website Logo" />
