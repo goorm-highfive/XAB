@@ -24,7 +24,7 @@ function SurveyCard({
   return (
     <Card className="mb-4 p-6 shadow-sm">
       <div className="mb-4 flex items-center gap-2">
-        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+        <div className="h-8 w-8 rounded-full bg-gray-300" />
         <div>
           <p className="text-sm font-medium">Alex Thompson</p>
           <p className="text-xs text-gray-500">{date}</p>

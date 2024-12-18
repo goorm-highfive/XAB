@@ -7,7 +7,7 @@ function Navbar() {
     <nav className="flex items-center justify-between bg-white p-4 shadow-sm">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <Image src="/xAB.svg" alt="Website Logo" />
+        <Image src="/xAB.svg" width={32} height={32} alt="Website Logo" />
       </div>
 
       {/* Navbar 메뉴 */}

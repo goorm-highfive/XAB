@@ -15,7 +15,7 @@ function ProfileHeader() {
   return (
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/* Avatar */}
-      <div className="mb-4 h-24 w-24 rounded-full bg-gray-300"></div>
+      <div className="mb-4 h-24 w-24 rounded-full bg-gray-300" />
       <div className="flex w-full justify-between">
         <div>
           <h2 className="text-2xl font-bold">Alex Thompson</h2>
