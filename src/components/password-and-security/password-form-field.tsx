@@ -9,7 +9,7 @@ import {
   FormControl,
 } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
-import { FormDataType } from '~/components/password-and-security/password-form'
+import type { FormDataType } from '~/components/password-and-security/password-form'
 
 type FormProps = {
   control: Control<FormDataType>
