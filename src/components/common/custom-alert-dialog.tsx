@@ -8,11 +8,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/common/alert-dialog'
+} from '~/components/ui/alert-dialog'
 import { Button } from '~/components/ui/button'
 
+// alert 관련 type정의 : 트리거 버튼 내용, 타이틀, action버튼 필수
 type CustomAlertDialogProps = {
-  [key: string]: string
+  triggerBtnText: string
+  alertTitle: string
+  description?: string
+  cancelBtnText?: string
+  actionBtnText: string
+  onActionClick?: () => void // 클릭 시 실행될 함수
 }
 
 const CustomAlertDialog = ({
@@ -21,6 +27,7 @@ const CustomAlertDialog = ({
   description,
   cancelBtnText,
   actionBtnText,
+  onActionClick, // 함수 전달 받기
 }: CustomAlertDialogProps) => {
   return (
     <AlertDialog>
@@ -33,8 +40,14 @@ const CustomAlertDialog = ({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelBtnText}</AlertDialogCancel>
-          <AlertDialogAction>{actionBtnText}</AlertDialogAction>
+          {cancelBtnText && (
+            <AlertDialogCancel>{cancelBtnText}</AlertDialogCancel>
+          )}
+          <AlertDialogAction
+            onClick={onActionClick ? onActionClick : undefined}
+          >
+            {actionBtnText}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

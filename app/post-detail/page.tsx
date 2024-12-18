@@ -7,9 +7,9 @@ function PostDetailPage() {
   return (
     <div className="mx-auto h-screen max-w-[1248px]">
       <section>
-        <PostView author={'Sarah Anderson'} createDate={'Jan 15, 2025'} />
+        <PostView />
       </section>
-      <section>
+      <section className="mt-6">
         <Card>
           <CardHeader>
             <CardTitle>Comments (89)</CardTitle>
