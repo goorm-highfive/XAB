@@ -2,6 +2,7 @@ import { ProfileSection } from '~/components/home/profile-section'
 import { SuggestSection } from '~/components/home/suggest-section'
 import { SiteHeader } from '~/components/common/site-header'
 import { SurveyCard } from '~/components/common/survey-card'
+import { NewSurveyButton } from '~/components/home/new-survey-button'
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <div className="mx-auto max-w-screen-2xl items-start gap-6 p-6 lg:flex">
         <ProfileSection />
         <div className="flex-1 space-y-6">
+          <NewSurveyButton />
           <SurveyCard
             date="March 15, 2025"
             question="Which landing page design do you prefer for our new product?"
