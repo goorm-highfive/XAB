@@ -6,9 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { Avatar, AvatarImage } from '~/components/ui/avatar'
-import { AvatarFallback } from '@radix-ui/react-avatar'
-import { Button } from '../ui/button'
+import { Avatar, AvatarImage, AvatarFallback } from '~/components/ui/avatar'
+import { Button } from '~/components/ui/button'
 
 function ProfileSection() {
   return (
