@@ -1,15 +1,15 @@
 'use client'
 
+import { Control } from 'react-hook-form'
+
 import {
   FormField,
   FormItem,
   FormLabel,
   FormControl,
 } from '~/components/ui/form'
-
 import { Input } from '~/components/ui/input'
-import { Control } from 'react-hook-form'
-import { FormDataType } from './password-form'
+import { FormDataType } from '~/components/password-and-security/password-form'
 
 type FormProps = {
   control: Control<FormDataType>

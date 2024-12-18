@@ -1,10 +1,11 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+
 import { Button } from '~/components/ui/button'
 import { Form } from '~/components/ui/form'
 import { PasswordFormField } from '~/components/password-and-security/password-form-field'
-import { toast } from 'sonner'
 
 export type FormDataType = {
   currentPassword: string
