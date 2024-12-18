@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '~/components/ui/dialog' // Shadcn Dialog
-import { SearchBar } from '~/components/search-bar'
+import { SearchBar } from '~/components/profile/profile-search-bar'
 import { UserFollowList } from '~/components/profile/profile-user-follow-list'
 import { useRouter } from 'next/navigation'
 
