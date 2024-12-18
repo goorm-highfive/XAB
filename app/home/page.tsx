@@ -1,7 +1,7 @@
 import { ProfileSection } from '~/components/home/profile-section'
 import { SuggestSection } from '~/components/home/suggest-section'
 import { SiteHeader } from '~/components/common/site-header'
-import { SurveyCard } from '~/components/profile/profile-survey-card'
+import { SurveyCard } from '~/components/common/survey-card'
 
 export default function Home() {
   return (
