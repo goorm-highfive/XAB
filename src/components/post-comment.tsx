@@ -11,9 +11,7 @@ function PostComment() {
       </div>
       <div className="flex-auto">
         <div className="rounded-lg bg-primary-foreground p-3">
-          <p>
-            <b>댓글 작성자</b>
-          </p>
+          <b>댓글 작성자</b>
           <p>내용</p>
         </div>
         <div className="mt-2 flex text-sm text-muted-foreground">
