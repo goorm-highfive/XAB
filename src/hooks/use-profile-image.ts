@@ -73,9 +73,7 @@ export function useProfileImage({ user }: ProfileInfoProps) {
 
       const compressedFile = await imageCompression(file, options)
 
-      const filePath = `${user.id}/profile-image.webp`
-
-      await supabase.storage.from('user_images').remove([filePath])
+      const filePath = `${user.id}/profile-image`
 
       const { error: uploadError } = await supabase.storage
         .from('user_images')
@@ -83,15 +81,8 @@ export function useProfileImage({ user }: ProfileInfoProps) {
 
       if (uploadError) throw new Error('이미지 업로드 실패')
 
-      const { data: publicUrlData } = supabase.storage
-        .from('user_images')
-        .getPublicUrl(filePath)
-
-      if (!publicUrlData?.publicUrl) throw new Error('이미지 URL 생성 실패')
-
-      const newImageUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`
-
-      await updateProfileImage(newImageUrl)
+      const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user_images/${filePath}?t=${Date.now()}`
+      await updateProfileImage(publicUrl)
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message)
