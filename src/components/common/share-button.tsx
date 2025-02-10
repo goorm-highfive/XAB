@@ -6,8 +6,8 @@ import {
   PopoverTrigger,
 } from '~/components/ui/popover'
 import { KakaoShare } from '~/components/social-share/kakao-share'
+import { LinkShare } from '~/components/social-share/link-share'
 import { ShareProps } from '~/types/share'
-import { LinkShare } from '../social-share/link-share'
 
 function ShareButton({
   postCaption,
