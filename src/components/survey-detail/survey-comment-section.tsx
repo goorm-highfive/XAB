@@ -22,17 +22,18 @@ export function CommentsSection({
   postId,
   currentUserName,
 }: CommentsSectionProps) {
-  // Zustand 스토어에서 댓글 트리 상태와 업데이트 함수를 사용합니다.
-  const { comments, setComments, toggleLike } = useCommentsStore()
-  console.log('이름' + currentUserName)
+  // commentsMap에서 현재 postId에 해당하는 댓글 배열을 가져옵니다.
+  const { commentsMap, setComments, toggleLike } = useCommentsStore()
+  const comments = commentsMap[postId] || []
+
   // 최초 렌더링 시, props로 전달받은 초기 댓글 데이터를 스토어에 설정합니다.
   useEffect(() => {
     if (comments.length === 0 && initialComments.length > 0) {
-      setComments(initialComments)
+      setComments(postId, initialComments)
     }
-  }, [initialComments, comments, setComments])
+  }, [initialComments, comments, setComments, postId])
 
-  // Supabase 리얼타임 구독을 통해 스토어 상태를 실시간 업데이트합니다.
+  // Supabase 리얼타임 구독을 통해 해당 게시글의 댓글을 실시간 업데이트합니다.
   useRealtimeComments(postId, currentUserName)
 
   // 좋아요 토글 함수: API 호출 후 store의 toggleLike를 사용하여 업데이트합니다.
@@ -51,8 +52,8 @@ export function CommentsSection({
       const data = await res.json()
       if (!data) return
 
-      // store의 toggleLike를 호출하여 해당 댓글의 좋아요 상태 업데이트
-      toggleLike(commentId, data.liked)
+      // store의 toggleLike를 호출하여 해당 댓글의 좋아요 상태 업데이트 (postId 전달)
+      toggleLike(postId, commentId, data.liked)
     } catch (err) {
       console.error('Comment like toggle error:', err)
     }

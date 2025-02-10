@@ -34,14 +34,14 @@ export const useRealtimeComments = (
 
           switch (eventType) {
             case 'INSERT':
-              // INSERT 이벤트 시, 현재 사용자의 이름을 함께 전달
-              addComment(newComment, currentUserName)
+              // 해당 게시글의 댓글 트리 업데이트
+              addComment(postId, newComment, currentUserName)
               break
             case 'UPDATE':
-              updateComment(newComment)
+              updateComment(postId, newComment)
               break
             case 'DELETE':
-              deleteComment(oldComment.id)
+              deleteComment(postId, oldComment.id)
               break
             default:
               break

@@ -2,52 +2,80 @@ import { create } from 'zustand'
 import { Comment } from '~/types/comment'
 import { Tables } from '~/types/supabase'
 
-type UserCommentsStoreType = {
-  comments: Comment[]
-  setComments: (comments: Comment[]) => void
-  addComment: (newComment: Tables<'comments'>, currentUserName: string) => void
-  deleteComment: (commentId: number) => void
-  updateComment: (updateComment: Tables<'comments'>) => void
-  toggleLike: (commentId: number, liked: boolean) => void
+type CommentsStoreType = {
+  // 각 postId별로 댓글 트리를 저장
+  commentsMap: { [key: number]: Comment[] }
+  setComments: (postId: number, comments: Comment[]) => void
+  addComment: (
+    postId: number,
+    newComment: Tables<'comments'>,
+    currentUserName: string,
+  ) => void
+  deleteComment: (postId: number, commentId: number) => void
+  updateComment: (postId: number, updatedComment: Tables<'comments'>) => void
+  toggleLike: (postId: number, commentId: number, liked: boolean) => void
 }
 
-const useCommentsStore = create<UserCommentsStoreType>((set) => ({
-  comments: [],
+const useCommentsStore = create<CommentsStoreType>((set) => ({
+  commentsMap: {},
 
-  setComments: (comments) => set({ comments }),
-
-  addComment: (newComment, currentUserName) =>
+  setComments: (postId, comments) =>
     set((state) => ({
-      comments: addCommentToTree(state.comments, newComment.parent_id, {
-        ...newComment,
-        username: currentUserName,
-        replies: [],
-        likeCount: 0,
-        userLiked: false,
-      }),
+      commentsMap: { ...state.commentsMap, [postId]: comments },
     })),
 
-  deleteComment: (commentId) =>
-    set((state) => ({
-      comments: removeCommentFromTree(state.comments, commentId),
-    })),
-
-  updateComment: (updatedComment) =>
+  addComment: (postId, newComment, currentUserName) =>
     set((state) => {
-      const updatedComments = updateCommentInTree(
-        state.comments,
-        updatedComment,
-      )
-      return { comments: [...updatedComments] }
+      const postComments = state.commentsMap[postId] || []
+      return {
+        commentsMap: {
+          ...state.commentsMap,
+          [postId]: addCommentToTree(postComments, newComment.parent_id, {
+            ...newComment,
+            username: currentUserName,
+            replies: [],
+            likeCount: 0,
+            userLiked: false,
+          }),
+        },
+      }
     }),
 
-  toggleLike: (commentId, liked) =>
-    set((state) => ({
-      comments: toggleLikeInTree(state.comments, commentId, liked),
-    })),
+  deleteComment: (postId, commentId) =>
+    set((state) => {
+      const postComments = state.commentsMap[postId] || []
+      return {
+        commentsMap: {
+          ...state.commentsMap,
+          [postId]: removeCommentFromTree(postComments, commentId),
+        },
+      }
+    }),
+
+  updateComment: (postId, updatedComment) =>
+    set((state) => {
+      const postComments = state.commentsMap[postId] || []
+      return {
+        commentsMap: {
+          ...state.commentsMap,
+          [postId]: updateCommentInTree(postComments, updatedComment),
+        },
+      }
+    }),
+
+  toggleLike: (postId, commentId, liked) =>
+    set((state) => {
+      const postComments = state.commentsMap[postId] || []
+      return {
+        commentsMap: {
+          ...state.commentsMap,
+          [postId]: toggleLikeInTree(postComments, commentId, liked),
+        },
+      }
+    }),
 }))
 
-// 🔹 댓글 트리에 댓글 추가
+// 기존에 작성한 트리 관련 헬퍼 함수는 그대로 사용합니다.
 const addCommentToTree = (
   comments: Comment[],
   parentId: number | null,
@@ -56,7 +84,6 @@ const addCommentToTree = (
   if (parentId === null) {
     return [...comments, newReply]
   }
-
   return comments.map((comment) => {
     if (comment.id === parentId) {
       return {
@@ -64,19 +91,16 @@ const addCommentToTree = (
         replies: [...comment.replies, newReply],
       }
     }
-
     if (comment.replies.length > 0) {
       return {
         ...comment,
         replies: addCommentToTree(comment.replies, parentId, newReply),
       }
     }
-
     return comment
   })
 }
 
-// 🔹 댓글 트리에서 댓글 삭제
 const removeCommentFromTree = (
   comments: Comment[],
   commentId: number,
@@ -89,7 +113,6 @@ const removeCommentFromTree = (
     }))
 }
 
-// 🔹 댓글 트리에서 댓글 업데이트
 const updateCommentInTree = (
   comments: Comment[],
   updatedComment: Tables<'comments'>,
@@ -98,19 +121,16 @@ const updateCommentInTree = (
     if (comment.id === updatedComment.id) {
       return { ...comment, ...updatedComment }
     }
-
     if (comment.replies.length > 0) {
       return {
         ...comment,
         replies: updateCommentInTree(comment.replies, updatedComment),
       }
     }
-
     return comment
   })
 }
 
-// 🔹 좋아요 상태 변경
 const toggleLikeInTree = (
   comments: Comment[],
   commentId: number,
@@ -124,14 +144,12 @@ const toggleLikeInTree = (
         likeCount: liked ? comment.likeCount + 1 : comment.likeCount - 1,
       }
     }
-
     if (comment.replies.length > 0) {
       return {
         ...comment,
         replies: toggleLikeInTree(comment.replies, commentId, liked),
       }
     }
-
     return comment
   })
 }
