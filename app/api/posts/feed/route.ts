@@ -105,7 +105,6 @@ export async function GET() {
     // 5) 포스트별로 댓글 수와 좋아요 수, userLiked, userVote 설정
     const formattedPosts = await Promise.all(
       posts.map(async (post) => {
-        console.log(post.ab_tests)
         // 사용자의 투표 정보 확인 및 votesA, votesB 계산
         let userVote: 'A' | 'B' | null = null
         let votesA = 0
