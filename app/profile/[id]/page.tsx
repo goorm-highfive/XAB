@@ -10,7 +10,7 @@ async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
     <div className="min-h-screen bg-gray-100">
       <div className="p-6">
         <div className="mx-auto mt-6 max-w-3xl space-y-6">
-          <ProfileHeader />
+          <ProfileHeader currentUserId={id} />
           <Suspense fallback={<SurveyCardSkeleton />}>
             <SurveyList type="profile" id={id} />
           </Suspense>

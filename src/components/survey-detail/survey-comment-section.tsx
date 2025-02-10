@@ -1,7 +1,7 @@
 // components/survey-detail/survey-comment-section.tsx
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { SurveyComment } from '~/components/survey-detail/survey-comment'
 import { SurveyCommentInput } from '~/components/survey-detail/survey-comment-input'
@@ -24,7 +24,16 @@ export function CommentsSection({
 }: CommentsSectionProps) {
   // commentsMap에서 현재 postId에 해당하는 댓글 배열을 가져옵니다.
   const { commentsMap, setComments, toggleLike } = useCommentsStore()
-  const comments = commentsMap[postId] || []
+
+  const comments = useMemo(() => {
+    return commentsMap[postId] || []
+  }, [commentsMap, postId])
+
+  useEffect(() => {
+    if (comments.length === 0 && initialComments.length > 0) {
+      setComments(postId, initialComments)
+    }
+  }, [initialComments, comments.length, postId, setComments])
 
   // 최초 렌더링 시, props로 전달받은 초기 댓글 데이터를 스토어에 설정합니다.
   useEffect(() => {
