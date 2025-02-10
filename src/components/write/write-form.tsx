@@ -20,8 +20,8 @@ import { ImageIcon, TypeIcon } from 'lucide-react'
 import { createClient } from '~/utils/supabase/client'
 import { WritePayload, writeSchema } from '~/schema/write'
 
-import { TextSurvey } from '~/components/write/text-write'
-import { ImageSurvey } from '~/components/write/image-write'
+import { TextSurvey } from '~/components/write/text-survey'
+import { ImageSurvey } from '~/components/write/image-survey'
 import { createPostAction, updatePostAction } from '~/actions/post-actions'
 
 interface WriteFormProps {
