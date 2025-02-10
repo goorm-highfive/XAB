@@ -12,13 +12,7 @@ import { addComment } from '~/actions/comment-action' // 서버 액션 임포트
 import defaultProfile from '~/assets/svgs/default-profile.svg'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from '~/components/ui/form'
+import { Form, FormField, FormItem, FormControl } from '~/components/ui/form'
 
 const commentSchema = z.object({
   comment: z
@@ -60,34 +54,34 @@ function SurveyCommentInput({ postId }: SurveyCommentInputProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="mt-5 flex border-t pt-5"
+        className="mt-5 flex items-center space-x-2 border-t pt-5"
       >
+        {/* 프로필 이미지 */}
         <div className="mr-3 mt-1 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
           <Image src={defaultProfile} alt="default profile" />
         </div>
+
+        {/* 입력 필드 */}
         <FormField
           name="comment"
           render={({ field }) => (
-            <FormItem className="relative flex-auto">
-              <FormControl>
+            <FormItem className="flex w-full">
+              <FormControl className="flex w-full">
                 <Input
                   type="text"
-                  className="h-10 rounded-lg border bg-gray-100 pl-5 pr-12"
+                  className="h-10 flex-grow rounded-lg border bg-gray-100 pl-5"
                   placeholder="Add a comment..."
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="pl-5" />
-              <Button
-                type="submit"
-                variant="ghost"
-                className="absolute right-2 top-1/2 -translate-y-1/2"
-              >
-                <Send />
-              </Button>
             </FormItem>
           )}
         />
+
+        {/* 버튼 */}
+        <Button type="submit" variant="ghost" className="p-2">
+          <Send className="h-5 w-5" />
+        </Button>
       </form>
     </Form>
   )
