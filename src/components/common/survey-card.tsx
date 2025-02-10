@@ -17,7 +17,6 @@ import { formatLikeCount } from '~/utils/like-formatters'
 import defaultProfile from '~/assets/svgs/default-profile.svg'
 import { Tables } from '~/types/supabase'
 import usePostStore from '~/stores/post-store'
-import { ShareButton } from './share-button'
 
 export type SurveyCardProps = {
   post?: Tables<'posts'>
@@ -319,7 +318,6 @@ function SurveyCard({
           <MessageSquare size={18} className="mr-1" />
           {commentsCount}
         </Link>
-        <ShareButton />
         {ab_test_id && (
           <span className="ml-auto">
             <strong>{totalVotes}</strong> Votes

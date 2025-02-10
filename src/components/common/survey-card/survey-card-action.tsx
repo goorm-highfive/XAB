@@ -1,8 +1,9 @@
 // components/common/survey-card/SurveyCardActions.tsx
 'use client'
-import { Heart, MessageSquare, Share2 } from 'lucide-react'
+import { Heart, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import { formatLikeCount } from '~/utils/like-formatters'
+import { ShareButton } from '~/components/common/share-button'
 
 interface SurveyCardActionsProps {
   userLiked: boolean | null
@@ -42,10 +43,7 @@ export function SurveyCardActions({
       </Link>
 
       {/* 공유 */}
-      <button className="flex items-center">
-        <Share2 size={18} className="mr-1" />
-        Share
-      </button>
+      <ShareButton />
 
       {/* 투표 수 (AB Test가 있을 때만) */}
       {abTestId && (
