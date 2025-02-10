@@ -59,21 +59,14 @@ function ProfileHeader({ currentUserId }: { currentUserId: string | null }) {
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/* Avatar */}
       <div className="relative mb-4 h-[70px] w-[70px] overflow-hidden rounded-full">
-        {userData?.profile_image ? (
+        {userData?.profile_image && (
           <Image
             fill
             className="object-cover"
-            src={userData.profile_image}
-            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-            alt="Profile Picture"
-          />
-        ) : (
-          <Image
-            fill
-            className="object-cover"
-            src={defaultProfile}
-            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-            alt="Default Profile Picture"
+            src={userData.profile_image || defaultProfile}
+            sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
+            alt="프로필 이미지"
+            quality={75}
           />
         )}
       </div>
