@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from '~/components/ui/popover'
 import { KakaoShare } from '~/components/social-share/kakao-share'
+import { XShare } from '~/components/social-share/x-share'
 import { LinkShare } from '~/components/social-share/link-share'
 import { ShareProps } from '~/types/share'
 
@@ -34,6 +35,11 @@ function ShareButton({
               likesCounts={likesCounts}
               commentsCounts={commentsCounts}
               postId={postId}
+            />
+            <XShare
+              postId={postId}
+              postCaption={postCaption}
+              username={username}
             />
             <LinkShare postId={postId} />
           </div>

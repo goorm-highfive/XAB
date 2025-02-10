@@ -1,7 +1,9 @@
 import { Link } from 'lucide-react'
 import { toast } from 'sonner'
 
-function LinkShare({ postId }: { postId: number }) {
+import { ShareProps } from '~/types/share'
+
+function LinkShare({ postId }: ShareProps) {
   const onClick = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/survey-detail/${postId}`
 
