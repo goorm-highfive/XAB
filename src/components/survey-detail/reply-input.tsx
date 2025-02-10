@@ -31,7 +31,7 @@ const replySchema = z.object({
 type ReplyFormValues = z.infer<typeof replySchema>
 
 type ReplyInputProps = {
-  username: string
+  username: string | undefined
   postId: number
   replyId: number | null
   dept: number | null

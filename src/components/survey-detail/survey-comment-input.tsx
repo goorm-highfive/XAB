@@ -31,6 +31,7 @@ type CommentFormValues = z.infer<typeof commentSchema>
 
 type SurveyCommentInputProps = {
   postId: number
+  currentUserName: string
 }
 
 function SurveyCommentInput({ postId }: SurveyCommentInputProps) {
