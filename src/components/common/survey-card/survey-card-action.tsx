@@ -13,6 +13,8 @@ interface SurveyCardActionsProps {
   onLikeToggle?: () => void
   totalVotes?: number
   abTestId?: number | null
+  postCaption?: string
+  username: string
 }
 
 export function SurveyCardActions({
@@ -23,6 +25,8 @@ export function SurveyCardActions({
   onLikeToggle,
   totalVotes,
   abTestId,
+  postCaption,
+  username,
 }: SurveyCardActionsProps) {
   return (
     <div className="mt-6 flex items-center gap-4 text-gray-500">
@@ -43,7 +47,13 @@ export function SurveyCardActions({
       </Link>
 
       {/* 공유 */}
-      <ShareButton />
+      <ShareButton
+        postCaption={postCaption}
+        likesCounts={initLikeCount}
+        commentsCounts={commentsCount}
+        username={username}
+        postId={postId}
+      />
 
       {/* 투표 수 (AB Test가 있을 때만) */}
       {abTestId && (

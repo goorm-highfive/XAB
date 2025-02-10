@@ -6,8 +6,16 @@ import {
   PopoverTrigger,
 } from '~/components/ui/popover'
 import { KakaoShare } from '~/components/social-share/kakao-share'
+import { ShareProps } from '~/types/share'
+import { LinkShare } from '../social-share/link-share'
 
-function ShareButton() {
+function ShareButton({
+  postCaption,
+  likesCounts,
+  commentsCounts,
+  username,
+  postId,
+}: ShareProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -18,9 +26,16 @@ function ShareButton() {
       </PopoverTrigger>
       <PopoverContent side="top" sideOffset={20}>
         <div className="flex-col items-center justify-center px-4">
-          <p className="font-bold">Share this post</p>
-          <div className="pt-4">
-            <KakaoShare />
+          <p className="text-center font-bold">Share this post</p>
+          <div className="flex justify-between pt-6">
+            <KakaoShare
+              username={username}
+              postCaption={postCaption}
+              likesCounts={likesCounts}
+              commentsCounts={commentsCounts}
+              postId={postId}
+            />
+            <LinkShare postId={postId} />
           </div>
         </div>
       </PopoverContent>

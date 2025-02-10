@@ -1,17 +1,27 @@
 import Image from 'next/image'
-import kakaoIcon from '~/assets/svgs/kakao-icon.svg'
 
-function KakaoShare() {
+import kakaoIcon from '~/assets/svgs/kakao-icon.svg'
+import { ShareProps } from '~/types/share'
+
+function KakaoShare({
+  postCaption,
+  likesCounts,
+  commentsCounts,
+  username,
+  postId,
+}: ShareProps) {
   const onClick = () => {
     const { Kakao } = window
+    const url = `survey-detail/${postId}`
 
     Kakao.Share.sendCustom({
       templateId: 117153,
       templateArgs: {
-        post_description: '제목입니다.',
-        username: '유저 이름',
-        like_counts: 6,
-        comments_counts: 0,
+        username: username,
+        post_description: postCaption,
+        likes_counts: likesCounts,
+        comments_counts: commentsCounts,
+        url: url,
       },
     })
   }
