@@ -1,8 +1,9 @@
 // components/common/survey-card/SurveyCardActions.tsx
 'use client'
-import { Heart, MessageSquare, Share2 } from 'lucide-react'
+import { Heart, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import { formatLikeCount } from '~/utils/like-formatters'
+import { ShareButton } from '~/components/common/share-button'
 
 interface SurveyCardActionsProps {
   userLiked: boolean | null
@@ -12,6 +13,8 @@ interface SurveyCardActionsProps {
   onLikeToggle?: () => void
   totalVotes?: number
   abTestId?: number | null
+  postCaption?: string
+  username: string
 }
 
 export function SurveyCardActions({
@@ -22,30 +25,35 @@ export function SurveyCardActions({
   onLikeToggle,
   totalVotes,
   abTestId,
+  postCaption,
+  username,
 }: SurveyCardActionsProps) {
   return (
     <div className="mt-6 flex items-center gap-4 text-gray-500">
       {/* 좋아요 버튼 */}
       <button onClick={onLikeToggle} className="flex items-center">
         {userLiked ? (
-          <Heart size={18} color="red" className="mr-4" strokeWidth={2} />
+          <Heart size={18} color="red" className="mr-2" strokeWidth={2} />
         ) : (
-          <Heart size={18} color="gray" className="mr-4" />
+          <Heart size={18} color="gray" className="mr-2" />
         )}
         {formatLikeCount(initLikeCount)}
       </button>
 
       {/* 댓글 */}
       <Link href={`/survey-detail/${postId}`} className="flex items-center">
-        <MessageSquare size={18} className="mr-1" />
+        <MessageSquare size={18} className="mr-2" />
         {commentsCount}
       </Link>
 
       {/* 공유 */}
-      <button className="flex items-center">
-        <Share2 size={18} className="mr-1" />
-        Share
-      </button>
+      <ShareButton
+        postCaption={postCaption}
+        likesCounts={initLikeCount}
+        commentsCounts={commentsCount}
+        username={username}
+        postId={postId}
+      />
 
       {/* 투표 수 (AB Test가 있을 때만) */}
       {abTestId && (

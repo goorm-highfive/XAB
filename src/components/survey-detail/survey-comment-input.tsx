@@ -69,7 +69,7 @@ function SurveyCommentInput({ postId }: SurveyCommentInputProps) {
               <FormControl className="flex w-full">
                 <Input
                   type="text"
-                  className="h-10 flex-grow rounded-lg border bg-gray-100 pl-5"
+                  className="h-10 flex-grow rounded-lg border bg-gray-100 pl-5 text-sm"
                   placeholder="Add a comment..."
                   {...field}
                 />
