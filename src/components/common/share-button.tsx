@@ -21,7 +21,7 @@ function ShareButton({
     <Popover>
       <PopoverTrigger asChild>
         <button className="flex items-center">
-          <Share2 size={18} className="mr-1" />
+          <Share2 size={18} className="mr-2" />
           Share
         </button>
       </PopoverTrigger>

@@ -97,8 +97,8 @@ function ReplyInput({
                 <Input
                   {...field}
                   type="text"
-                  className="h-[40px] rounded-[30px] border-0 bg-primary-foreground pl-5 pr-[40px]"
-                  placeholder={`@${username}에게 답글 달기`}
+                  className="h-[40px] rounded-[30px] border-0 bg-primary-foreground pl-5 pr-[40px] text-sm"
+                  placeholder={`Reply to ${username}`}
                 />
               </FormControl>
               <FormMessage className="pl-7" />
