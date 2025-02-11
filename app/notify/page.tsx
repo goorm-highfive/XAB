@@ -28,7 +28,10 @@ function NotifyPage() {
             <NotifyGroup key={createdAt} createdAt={createdAt} items={items} />
           ))
         ) : (
-          <li>로딩중입니다!</li>
+          <li className="text-center">
+            <p className="text-lg font-semibold">No new notifications.</p>
+            <span className="text-sm">Try engaging with the community!</span>
+          </li>
         )}
       </ul>
     </div>
