@@ -38,7 +38,7 @@ function NotificationButton() {
         {notify.length < 0 ? (
           <div>로딩중</div>
         ) : (
-          <div className="h-5/6 overflow-y-scroll">
+          <div className="h-5/6 overflow-y-auto">
             {previewNotify.map((item) => (
               <NotifyItem
                 key={item.id}
