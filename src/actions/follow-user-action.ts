@@ -2,7 +2,7 @@
 'use server'
 import { headers } from 'next/headers'
 
-async function toggleFollowUserAction(formData: FormData) {
+async function toggleFollowUserAction(_prevState: unknown, formData: FormData) {
   const userId = formData.get('userId') as string
   const action = formData.get('action') as string // 'follow' 또는 'unfollow'
   if (!userId) throw new Error('사용자 ID가 없습니다.')
