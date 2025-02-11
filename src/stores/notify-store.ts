@@ -7,12 +7,15 @@ type NotifyStore = {
   unsubscribe: (() => void) | null // 구독 해제 -> 새로고침 시 구독 중복 -> 이를 방지
   fetchNotify: (user_id: string) => Promise<void>
   clearNotify: () => void // 상태 초기화
+  closeSheet?: () => void
+  setCloseSheet: (fn: () => void) => void
 }
 
 const useNotifyStore = create<NotifyStore>((set, get) => ({
   notify: [],
   unsubscribe: null,
-
+  closeSheet: undefined,
+  setCloseSheet: (fn) => set({ closeSheet: fn }),
   fetchNotify: async (userId: string) => {
     const supabase = createClient()
 

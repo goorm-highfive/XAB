@@ -3,13 +3,14 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
+import { useNotifyStore } from '~/stores/notify-store'
 import type { Tables } from '~/types/supabase'
 import { createClient } from '~/utils/supabase/client'
 
 type NotifyItemProps = {
   item: Tables<'notifications'>
   createdAt: string
-  closeSheet: () => void
+  closeSheet?: () => void
 }
 
 const handleIsRead = async (id: number) => {
@@ -19,15 +20,17 @@ const handleIsRead = async (id: number) => {
     .eq('id', id)
 }
 
-function NotifyItem({ item, createdAt, closeSheet }: NotifyItemProps) {
+function NotifyItem({ item, createdAt }: NotifyItemProps) {
   const { is_read, action, id, post_id } = item
+
+  const closeSheet = useNotifyStore((state) => state.closeSheet)
 
   const [read, setRead] = useState(is_read)
 
   const handleClick = async () => {
     setRead(true)
     await handleIsRead(id)
-    closeSheet()
+    closeSheet?.()
   }
 
   const content = (

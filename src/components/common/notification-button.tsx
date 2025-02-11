@@ -7,7 +7,6 @@ import { NotifyItem } from '~/components/notify/notify-item'
 import { Button } from '~/components/ui/button'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetTitle,
   SheetTrigger,
@@ -51,11 +50,11 @@ function NotificationButton() {
           </div>
         )}
         <div className="pt-6">
-          <SheetClose asChild>
-            <Button className="h-12 w-full py-3 text-center" asChild>
-              <Link href="/notify">View All</Link>
-            </Button>
-          </SheetClose>
+          <Button className="h-12 w-full py-3 text-center" asChild>
+            <Link href="/notify" onClick={() => setOpen(false)}>
+              View All
+            </Link>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

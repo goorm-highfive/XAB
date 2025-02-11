@@ -8,9 +8,8 @@ type GroupedNotify = {
   [created_at: string]: Tables<'notifications'>[]
 }
 
-function NotifyPage({ closeSheet }: { closeSheet: () => void }) {
+function NotifyPage() {
   const { notify } = useNotifyStore()
-
   const groupedData = notify.reduce<GroupedNotify>((acc, curr) => {
     const createdAt = curr.created_at?.split('T')[0] || 'Unknown'
 
@@ -26,12 +25,7 @@ function NotifyPage({ closeSheet }: { closeSheet: () => void }) {
       <ul>
         {notify.length > 0 ? (
           Object.entries(groupedData).map(([createdAt, items]) => (
-            <NotifyGroup
-              key={createdAt}
-              createdAt={createdAt}
-              items={items}
-              closeSheet={closeSheet}
-            />
+            <NotifyGroup key={createdAt} createdAt={createdAt} items={items} />
           ))
         ) : (
           <li>로딩중입니다!</li>
