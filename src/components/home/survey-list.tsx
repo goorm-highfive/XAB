@@ -59,7 +59,6 @@ async function SurveyList({ type, id }: { type: string; id: string | null }) {
     })
 
     const { data }: { data: Post[] } = await res.json()
-    console.log(data)
 
     // 렌더링
     return (

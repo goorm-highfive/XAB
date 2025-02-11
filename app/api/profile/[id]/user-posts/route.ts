@@ -43,7 +43,7 @@ export async function GET(
       )
       .eq('user_id', id)
       .order('created_at', { ascending: false })
-    console.log(posts)
+
     if (postsError) {
       throw new Error(postsError.message)
     }

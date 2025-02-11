@@ -1,89 +1,68 @@
-'use client'
-
+// app/components/ProfileHeader.server.tsx
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
 import { SettingButton } from '~/components/profile/profile-setting-button'
 import { Button } from '~/components/ui/button'
 import defaultProfile from '~/assets/svgs/default-profile.svg'
-import { ProfileHeaderSkeleton } from './profile-header-skeleton'
+import { headers } from 'next/headers'
+import { FollowButton } from '../common/follow-button'
 
-function ProfileHeader({ currentUserId }: { currentUserId: string | null }) {
-  const [isFollowing, setIsFollowing] = useState(true)
-  const [userData, setUserData] = useState<{
+type Props = {
+  profileId: string
+  currentUserId: string | null
+}
+
+async function ProfileHeader({ profileId, currentUserId }: Props) {
+  const id = profileId
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+  const apiUrl = `${baseUrl}/api/profile/${id}/user-profile`
+  const clientHeaders = await headers()
+
+  const authorizationHeader = clientHeaders.get('Authorization') || ''
+  const cookieHeader = clientHeaders.get('Cookie') || ''
+
+  const res = await fetch(apiUrl, {
+    headers: {
+      Authorization: authorizationHeader,
+      Cookie: cookieHeader,
+    },
+  })
+
+  if (!res.ok) {
+    return (
+      <p className="text-red-500">
+        Error: 사용자 프로필을 불러오지 못했습니다.
+      </p>
+    )
+  }
+
+  const userData: {
     username: string
     bio: string
     profile_image: string | null
     followerCount: number
     followingCount: number
     postCount: number
-  } | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const { id } = useParams() // URL에서 userId 추출
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      setIsLoading(true)
-      try {
-        const response = await fetch(`/api/profile/${id}/user-profile`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile')
-        }
-        const data = await response.json()
-        setUserData(data)
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Unknown error occurred')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchUserData()
-  }, [id])
-
-  const toggleFollow = () => {
-    setIsFollowing((prev) => !prev)
-  }
-
-  if (isLoading) {
-    return <ProfileHeaderSkeleton />
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error: {error}</p>
-  }
+    isFollowing: boolean
+  } = await res.json()
 
   return (
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/* Avatar */}
       <div className="relative mb-4 h-[70px] w-[70px] overflow-hidden rounded-full">
-        {userData?.profile_image ? (
-          <Image
-            fill
-            className="object-cover"
-            src={userData.profile_image}
-            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-            alt="Profile Picture"
-          />
-        ) : (
-          <Image
-            fill
-            className="object-cover"
-            src={defaultProfile}
-            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-            alt="Default Profile Picture"
-          />
-        )}
+        <Image
+          fill
+          className="object-cover"
+          src={userData.profile_image || defaultProfile}
+          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+          alt="Profile Picture"
+        />
       </div>
 
       {/* Header 상단 */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">
-            {userData?.username || 'Guest'}
-          </h2>
+          <h2 className="text-2xl font-bold">{userData.username || 'Guest'}</h2>
         </div>
 
         {/* 버튼 그룹 */}
@@ -96,31 +75,30 @@ function ProfileHeader({ currentUserId }: { currentUserId: string | null }) {
               <SettingButton />
             </>
           ) : (
-            <Button
-              onClick={toggleFollow}
-              variant={isFollowing ? 'default' : 'outline'}
-            >
-              {isFollowing ? 'Following' : 'Follow'}
-            </Button>
+            <FollowButton
+              userId={id}
+              isFollowing={userData.isFollowing}
+              style={'w-24'}
+            />
           )}
         </div>
       </div>
 
       {/* Description */}
       <p className="mt-4 text-gray-600">
-        {userData?.bio || 'User bio not available'}
+        {userData.bio || 'User bio not available'}
       </p>
 
       {/* Stats */}
       <div className="mt-4 flex gap-6 text-sm text-gray-700">
         <Link href={`/profile/${id}/followings`} className="hover:underline">
-          <strong>{userData?.followingCount || 0}</strong> Following
+          <strong>{userData.followingCount || 0}</strong> Following
         </Link>
         <Link href={`/profile/${id}/followers`} className="hover:underline">
-          <strong>{userData?.followerCount || 0}</strong> Followers
+          <strong>{userData.followerCount || 0}</strong> Followers
         </Link>
         <span>
-          <strong>{userData?.postCount || 0}</strong> Posts
+          <strong>{userData.postCount || 0}</strong> Posts
         </span>
       </div>
     </div>
