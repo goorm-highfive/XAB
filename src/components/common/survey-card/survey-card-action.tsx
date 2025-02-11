@@ -33,16 +33,16 @@ export function SurveyCardActions({
       {/* 좋아요 버튼 */}
       <button onClick={onLikeToggle} className="flex items-center">
         {userLiked ? (
-          <Heart size={18} color="red" className="mr-4" strokeWidth={2} />
+          <Heart size={18} color="red" className="mr-2" strokeWidth={2} />
         ) : (
-          <Heart size={18} color="gray" className="mr-4" />
+          <Heart size={18} color="gray" className="mr-2" />
         )}
         {formatLikeCount(initLikeCount)}
       </button>
 
       {/* 댓글 */}
       <Link href={`/survey-detail/${postId}`} className="flex items-center">
-        <MessageSquare size={18} className="mr-1" />
+        <MessageSquare size={18} className="mr-2" />
         {commentsCount}
       </Link>
 
