@@ -24,7 +24,7 @@ const useNotifyStore = create<NotifyStore>((set, get) => ({
     // 데이터 가져오기
     const { data, error } = await supabase
       .from('notifications')
-      .select('id, user_id, action, created_at, is_read')
+      .select('id, user_id, action, created_at, is_read, post_id')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
 

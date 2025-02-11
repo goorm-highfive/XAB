@@ -277,6 +277,7 @@ export type Database = {
           id: number
           is_read: boolean
           user_id: string
+          post_id: string | null
         }
         Insert: {
           action: string
@@ -284,6 +285,7 @@ export type Database = {
           id?: number
           is_read?: boolean
           user_id: string
+          post_id: string | null
         }
         Update: {
           action?: string
@@ -291,6 +293,7 @@ export type Database = {
           id?: number
           is_read?: boolean
           user_id?: string
+          post_id?: string | null
         }
         Relationships: [
           {

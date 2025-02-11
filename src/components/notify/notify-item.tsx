@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import type { Tables } from '~/types/supabase'
 import { createClient } from '~/utils/supabase/client'
@@ -7,6 +8,7 @@ import { createClient } from '~/utils/supabase/client'
 type NotifyItemProps = {
   item: Tables<'notifications'>
   createdAt: string
+  closeSheet: () => void
 }
 
 const handleIsRead = async (id: number) => {
@@ -19,10 +21,10 @@ const handleIsRead = async (id: number) => {
   console.log(error)
 }
 
-function NotifyItem({ item, createdAt }: NotifyItemProps) {
-  const { is_read, action, id } = item
+function NotifyItem({ item, createdAt, closeSheet }: NotifyItemProps) {
+  const { is_read, action, id, post_id } = item
 
-  return (
+  const content = (
     <Alert
       onClick={() => handleIsRead(id)}
       className={`relative my-4 flex cursor-pointer justify-between p-4 pr-10 ${is_read ? 'opacity-50' : 'opacity-100'}`}
@@ -33,7 +35,7 @@ function NotifyItem({ item, createdAt }: NotifyItemProps) {
         </div>
         <div>
           <AlertTitle className="text-base font-semibold">
-            <span className="font-normal"> {action || 'undefined'}</span>
+            <span className="font-normal">{action || 'undefined'}</span>
           </AlertTitle>
           <AlertDescription className="text-sm text-muted-foreground">
             {createdAt}
@@ -44,6 +46,14 @@ function NotifyItem({ item, createdAt }: NotifyItemProps) {
         <div className="absolute right-4 h-3 w-3 rounded-full bg-chart-1" />
       )}
     </Alert>
+  )
+
+  return post_id ? (
+    <Link href={`/survey-detail/${post_id}`} onClick={closeSheet}>
+      {content}
+    </Link>
+  ) : (
+    content
   )
 }
 

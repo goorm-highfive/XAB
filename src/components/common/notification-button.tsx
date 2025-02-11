@@ -1,8 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { Bell } from 'lucide-react'
-
 import { NotifyItem } from '~/components/notify/notify-item'
 import { Button } from '~/components/ui/button'
 import {
@@ -18,9 +18,10 @@ import { useNotifyStore } from '~/stores/notify-store'
 function NotificationButton() {
   const { notify } = useNotifyStore()
   const previewNotify = notify.slice(0, 10)
+  const [open, setOpen] = useState(false)
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
@@ -44,6 +45,7 @@ function NotificationButton() {
                 key={item.id}
                 item={item}
                 createdAt={item.created_at?.split('T')[0] || 'Unknown'}
+                closeSheet={() => setOpen(false)}
               />
             ))}
           </div>
