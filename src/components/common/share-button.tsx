@@ -26,9 +26,9 @@ function ShareButton({
         </button>
       </PopoverTrigger>
       <PopoverContent side="top" sideOffset={20}>
-        <div className="flex-col items-center justify-center px-4">
-          <p className="text-center font-bold">Share this post</p>
-          <div className="flex justify-between pt-6">
+        <div className="flex-col items-center justify-center px-4 py-1">
+          <p className="text-center font-semibold">Share with friends</p>
+          <div className="flex justify-around pb-3 pt-6">
             <KakaoShare
               username={username}
               postCaption={postCaption}
@@ -36,6 +36,7 @@ function ShareButton({
               commentsCounts={commentsCounts}
               postId={postId}
             />
+
             <XShare
               postId={postId}
               postCaption={postCaption}
