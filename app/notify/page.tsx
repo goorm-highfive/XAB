@@ -1,5 +1,6 @@
 'use client'
 
+import EmptyState from '~/components/common/empty-state'
 import { NotifyGroup } from '~/components/notify/notify-group'
 import { useNotifyStore } from '~/stores/notify-store'
 import { Tables } from '~/types/supabase'
@@ -28,9 +29,11 @@ function NotifyPage() {
             <NotifyGroup key={createdAt} createdAt={createdAt} items={items} />
           ))
         ) : (
-          <li className="text-center">
-            <p className="text-lg font-semibold">No new notifications.</p>
-            <span className="text-sm">Try engaging with the community!</span>
+          <li>
+            <EmptyState
+              title="No new notifications."
+              subTitle="Try engaging with the community!"
+            />
           </li>
         )}
       </ul>

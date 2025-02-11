@@ -13,6 +13,7 @@ import {
   SheetDescription,
 } from '~/components/ui/custom-sheet'
 import { useNotifyStore } from '~/stores/notify-store'
+import EmptyState from '~/components/common/empty-state'
 
 function NotificationButton() {
   const { notify } = useNotifyStore()
@@ -46,12 +47,10 @@ function NotificationButton() {
               />
             ))
           ) : (
-            <div className="pt- text-center">
-              <p className="text-md font-semibold">No new notifications.</p>
-              <span className="text-xs text-gray-500">
-                Try engaging with the community!
-              </span>
-            </div>
+            <EmptyState
+              title="No new notifications."
+              subTitle="Try engaging with the community!"
+            />
           )}
         </div>
         <div className="pt-6">
