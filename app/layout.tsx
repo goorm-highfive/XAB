@@ -4,11 +4,19 @@ import { SiteHeader } from '~/components/common/site-header'
 import { ClientSessionManager } from '~/components/auth/client-session-manager'
 import { Toaster } from '~/components/ui/sonner'
 import { NotificationProvider } from '~/components/notify/notify-provider'
+import { KakaoScript } from '~/components/common/kakao-script'
 import '~/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'XAB',
   description: 'A/B 테스트를 집단지성으로!',
+}
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Kakao: any
+  }
 }
 
 export default function RootLayout({
@@ -29,6 +37,7 @@ export default function RootLayout({
         </main>
         {modal}
         <Toaster />
+        <KakaoScript />
       </body>
     </html>
   )
