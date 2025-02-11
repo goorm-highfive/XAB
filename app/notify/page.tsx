@@ -5,10 +5,10 @@ import { useNotifyStore } from '~/stores/notify-store'
 import { Tables } from '~/types/supabase'
 
 type GroupedNotify = {
-  [crated_at: string]: Tables<'notifications'>[]
+  [created_at: string]: Tables<'notifications'>[]
 }
 
-function NotifyPage() {
+function NotifyPage({ closeSheet }: { closeSheet: () => void }) {
   const { notify } = useNotifyStore()
 
   const groupedData = notify.reduce<GroupedNotify>((acc, curr) => {
@@ -26,7 +26,12 @@ function NotifyPage() {
       <ul>
         {notify.length > 0 ? (
           Object.entries(groupedData).map(([createdAt, items]) => (
-            <NotifyGroup key={createdAt} createdAt={createdAt} items={items} />
+            <NotifyGroup
+              key={createdAt}
+              createdAt={createdAt}
+              items={items}
+              closeSheet={closeSheet}
+            />
           ))
         ) : (
           <li>로딩중입니다!</li>

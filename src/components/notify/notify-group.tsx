@@ -4,7 +4,7 @@ import type { Tables } from '~/types/supabase'
 type NotifyGroupProps = {
   createdAt: string
   items: Tables<'notifications'>[]
-  closeSheet: () => void // ✅ Sheet 닫기 함수 추가
+  closeSheet: () => void
 }
 
 function NotifyGroup({ items, createdAt, closeSheet }: NotifyGroupProps) {

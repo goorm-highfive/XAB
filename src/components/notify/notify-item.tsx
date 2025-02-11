@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import type { Tables } from '~/types/supabase'
 import { createClient } from '~/utils/supabase/client'
@@ -12,22 +13,27 @@ type NotifyItemProps = {
 }
 
 const handleIsRead = async (id: number) => {
-  const supabase = createClient()
-  const { error } = await supabase
+  await createClient()
     .from('notifications')
     .update({ is_read: true })
     .eq('id', id)
-
-  console.log(error)
 }
 
 function NotifyItem({ item, createdAt, closeSheet }: NotifyItemProps) {
   const { is_read, action, id, post_id } = item
 
+  const [read, setRead] = useState(is_read)
+
+  const handleClick = async () => {
+    setRead(true)
+    await handleIsRead(id)
+    closeSheet()
+  }
+
   const content = (
     <Alert
-      onClick={() => handleIsRead(id)}
-      className={`relative my-4 flex cursor-pointer justify-between p-4 pr-10 ${is_read ? 'opacity-50' : 'opacity-100'}`}
+      onClick={handleClick}
+      className={`relative my-4 flex cursor-pointer justify-between p-4 pr-10 ${read ? 'opacity-50' : 'opacity-100'}`}
     >
       <div className="items-top flex">
         <div className="mr-4">
