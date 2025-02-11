@@ -1,8 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Write from '#/write/page'
-
+import { WriteForm } from '~/components/write/write-form'
 import {
   Dialog,
   DialogContent,
@@ -18,12 +17,11 @@ export default function WriteModal() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const postIdParam = urlParams.get('postId')
-
     if (postIdParam) setPostId(postIdParam)
   }, [])
 
   const handleClose = () => {
-    router.back()
+    router.back() // 인터셉트 라우팅을 통해 모달 닫기
   }
 
   return (
@@ -36,7 +34,7 @@ export default function WriteModal() {
               : 'Create Post with A/B Testing'}
           </DialogTitle>
         </DialogHeader>
-        <Write />
+        <WriteForm onClose={handleClose} />
       </DialogContent>
     </Dialog>
   )
