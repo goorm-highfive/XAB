@@ -278,6 +278,7 @@ export type Database = {
           is_read: boolean
           user_id: string
           post_id: string | null
+          sender_is: string
         }
         Insert: {
           action: string
@@ -286,6 +287,7 @@ export type Database = {
           is_read?: boolean
           user_id: string
           post_id: string | null
+          sender_is: string
         }
         Update: {
           action?: string
@@ -294,11 +296,19 @@ export type Database = {
           is_read?: boolean
           user_id?: string
           post_id?: string | null
+          sender_is?: string
         }
         Relationships: [
           {
             foreignKeyName: 'notifications_user_id_fkey'
             columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'notifications_sender_is_fkey'
+            columns: ['sender_is']
             isOneToOne: false
             referencedRelation: 'users'
             referencedColumns: ['id']
