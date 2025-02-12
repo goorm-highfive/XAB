@@ -4,21 +4,26 @@ import { ProfileSection } from '~/components/home/profile-section'
 import { SuggestSection } from '~/components/home/suggest-section'
 import { NewSurveyButton } from '~/components/home/new-survey-button'
 import { SurveyCardSkeleton } from '~/components/common/survey-card/surveycard-skeleton'
+import { ProfileSkeleton } from '~/components/home/profile-skeleton'
+import { SuggestSkeleton } from '~/components/home/suggest-section-skeleton'
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="mx-auto max-w-screen-2xl items-start gap-6 p-6 lg:flex">
-        <div className="lg:w-72">
+        <Suspense fallback={<ProfileSkeleton />}>
           <ProfileSection />
-        </div>
+        </Suspense>
+
         <div className="flex-1 space-y-6">
           <NewSurveyButton />
           <Suspense fallback={<SurveyCardSkeleton />}>
             <SurveyList type="feed" id={null} />
           </Suspense>
         </div>
-        <SuggestSection />
+        <Suspense fallback={<SuggestSkeleton />}>
+          <SuggestSection />
+        </Suspense>
       </div>
     </div>
   )
