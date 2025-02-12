@@ -2,6 +2,9 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
+import { MessageSquareDashed } from 'lucide-react'
+
+import EmptyState from '~/components/common/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { SurveyComment } from '~/components/survey-detail/survey-comment'
 import { SurveyCommentInput } from '~/components/survey-detail/survey-comment-input'
@@ -84,7 +87,12 @@ export function CommentsSection({
             />
           ))
         ) : (
-          <p>No Comments Yet</p>
+          <EmptyState
+            type="default"
+            icon={<MessageSquareDashed size={24} />}
+            title="No comments yet"
+            subTitle="Be the first to comment."
+          />
         )}
         <SurveyCommentInput postId={postId} />
       </CardContent>

@@ -1,6 +1,9 @@
-import { SurveyCard } from '~/components/common/survey-card/survey-card'
-import { fetchUserAuth } from '~/utils/fetch-user-auth'
 import { headers } from 'next/headers'
+import { AppWindowMac } from 'lucide-react'
+
+import { SurveyCard } from '~/components/common/survey-card/survey-card'
+import EmptyState from '~/components/common/empty-state'
+import { fetchUserAuth } from '~/utils/fetch-user-auth'
 
 // 게시글 데이터 타입 정의
 type Post = {
@@ -59,7 +62,18 @@ async function SurveyList({ type, id }: { type: string; id: string | null }) {
     })
 
     const { data }: { data: Post[] } = await res.json()
-    console.log(data)
+
+    // 포스트가 없을 때
+    if (data.length === 0) {
+      return (
+        <EmptyState
+          type="card"
+          icon={<AppWindowMac size={32} />}
+          title="here are no posts yet"
+          subTitle="Start by creating a new survey! "
+        />
+      )
+    }
 
     // 렌더링
     return (

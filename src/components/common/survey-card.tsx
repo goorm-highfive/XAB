@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Heart, MessageSquare, Share2, Ellipsis } from 'lucide-react'
+import { Heart, MessageSquare, Ellipsis } from 'lucide-react'
 import { Card } from '~/components/ui/card'
 import { Progress } from '~/components/ui/progress'
 import {
@@ -318,10 +318,6 @@ function SurveyCard({
           <MessageSquare size={18} className="mr-1" />
           {commentsCount}
         </Link>
-        <button className="flex items-center">
-          <Share2 size={18} className="mr-1" />
-          Share
-        </button>
         {ab_test_id && (
           <span className="ml-auto">
             <strong>{totalVotes}</strong> Votes
