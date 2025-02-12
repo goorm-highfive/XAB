@@ -1,8 +1,13 @@
+// components/survey-detail/reply-input.tsx
+'use client'
+
 import Image from 'next/image'
 import { Send } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 import defaultProfile from '~/assets/svgs/default-profile.svg'
 import { Button } from '~/components/ui/button'
@@ -14,9 +19,8 @@ import {
   FormControl,
   FormMessage,
 } from '~/components/ui/form'
-import { useState } from 'react'
-import { toast } from 'sonner'
 
+// 답글 입력 스키마 정의
 const replySchema = z.object({
   replyContent: z
     .string()
@@ -27,13 +31,20 @@ const replySchema = z.object({
 type ReplyFormValues = z.infer<typeof replySchema>
 
 type ReplyInputProps = {
-  username: string
+  username: string | undefined
   postId: number
   replyId: number | null
   dept: number | null
+  onReplySubmit: () => void // 답글 작성 후 부모 컴포넌트에서 reply 창을 닫기 위한 콜백
 }
 
-function ReplyInput({ username, postId, replyId, dept }: ReplyInputProps) {
+function ReplyInput({
+  username,
+  postId,
+  replyId,
+  dept,
+  onReplySubmit,
+}: ReplyInputProps) {
   const form = useForm<ReplyFormValues>({
     resolver: zodResolver(replySchema),
     defaultValues: { replyContent: '' },
@@ -63,6 +74,7 @@ function ReplyInput({ username, postId, replyId, dept }: ReplyInputProps) {
         form.reset()
         toast.success('The comment has been successfully added.')
         setIsSubmitting(false)
+        onReplySubmit() // 답글 작성 후 reply 창 닫기
       }, 500)
     }
   }
@@ -85,8 +97,8 @@ function ReplyInput({ username, postId, replyId, dept }: ReplyInputProps) {
                 <Input
                   {...field}
                   type="text"
-                  className="h-[40px] rounded-[30px] border-0 bg-primary-foreground pl-5 pr-[40px]"
-                  placeholder={`@${username}에게 답글 달기`}
+                  className="h-[40px] rounded-[30px] border-0 bg-primary-foreground pl-5 pr-[40px] text-sm"
+                  placeholder={`Reply to ${username}`}
                 />
               </FormControl>
               <FormMessage className="pl-7" />

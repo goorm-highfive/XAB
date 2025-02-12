@@ -1,59 +1,72 @@
+// components/survey-detail/survey-comment-section.tsx
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo } from 'react'
+import { MessageSquareDashed } from 'lucide-react'
+
+import EmptyState from '~/components/common/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { SurveyComment } from '~/components/survey-detail/survey-comment'
 import { SurveyCommentInput } from '~/components/survey-detail/survey-comment-input'
 import { Comment } from '~/types/comment'
+import { useCommentsStore } from '~/stores/use-comment-store'
+import { useRealtimeComments } from '~/hooks/use-realtime-comments'
 
 type CommentsSectionProps = {
   initialComments: Comment[]
   currentUserId: string
   postId: number
+  currentUserName: string
 }
 
 export function CommentsSection({
   initialComments,
   currentUserId,
   postId,
+  currentUserName,
 }: CommentsSectionProps) {
-  const [comments, setComments] = useState<Comment[]>(initialComments)
+  // commentsMap에서 현재 postId에 해당하는 댓글 배열을 가져옵니다.
+  const { commentsMap, setComments, toggleLike } = useCommentsStore()
 
-  // 댓글 좋아요 토글
+  const comments = useMemo(() => {
+    return commentsMap[postId] || []
+  }, [commentsMap, postId])
+
+  useEffect(() => {
+    if (comments.length === 0 && initialComments.length > 0) {
+      setComments(postId, initialComments)
+    }
+  }, [initialComments, comments.length, postId, setComments])
+
+  // 최초 렌더링 시, props로 전달받은 초기 댓글 데이터를 스토어에 설정합니다.
+  useEffect(() => {
+    if (comments.length === 0 && initialComments.length > 0) {
+      setComments(postId, initialComments)
+    }
+  }, [initialComments, comments, setComments, postId])
+
+  // Supabase 리얼타임 구독을 통해 해당 게시글의 댓글을 실시간 업데이트합니다.
+  useRealtimeComments(postId, currentUserName)
+
+  // 좋아요 토글 함수: API 호출 후 store의 toggleLike를 사용하여 업데이트합니다.
   const handleCommentLikeToggle = async (commentId: number) => {
     try {
       const res = await fetch('/api/comment-like', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ commentId }),
-        credentials: 'include', // 쿠키 포함
+        credentials: 'include',
       })
-
       if (!res.ok) {
         const errJson = await res.json().catch(() => ({}))
         throw new Error(errJson.error || 'Failed to toggle like')
       }
-
       const data = await res.json()
-
       if (!data) return
 
-      setComments((prev) =>
-        prev.map((comment) =>
-          comment.id === commentId
-            ? {
-                ...comment,
-                userLiked: data.liked,
-                likeCount: data.liked
-                  ? comment.likeCount + 1
-                  : comment.likeCount - 1,
-              }
-            : comment,
-        ),
-      )
-    } catch (err: unknown) {
+      // store의 toggleLike를 호출하여 해당 댓글의 좋아요 상태 업데이트 (postId 전달)
+      toggleLike(postId, commentId, data.liked)
+    } catch (err) {
       console.error('Comment like toggle error:', err)
     }
   }
@@ -61,7 +74,7 @@ export function CommentsSection({
   return (
     <Card className="mt-6">
       <CardHeader>
-        <CardTitle>Comments ({comments?.length})</CardTitle>
+        <CardTitle>Comments ({comments.length})</CardTitle>
       </CardHeader>
       <CardContent>
         {comments.length > 0 ? (
@@ -70,12 +83,16 @@ export function CommentsSection({
               key={comment.id}
               comment={comment}
               currentUserId={currentUserId}
-              postId={postId}
               handleCommentLikeToggle={handleCommentLikeToggle}
             />
           ))
         ) : (
-          <p>No Comments Yet</p>
+          <EmptyState
+            type="default"
+            icon={<MessageSquareDashed size={24} />}
+            title="No comments yet"
+            subTitle="Be the first to comment."
+          />
         )}
         <SurveyCommentInput postId={postId} />
       </CardContent>

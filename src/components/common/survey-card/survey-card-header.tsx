@@ -34,7 +34,7 @@ export function SurveyCardHeader({
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
-    if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return
+    if (!confirm('Are you sure you wand to delete this post?')) return
     setIsDeleting(true)
 
     try {
@@ -49,15 +49,14 @@ export function SurveyCardHeader({
       }
 
       await response.json()
-      alert('게시글이 삭제되었습니다.')
+      alert('The post has been deleted.')
       router.push('/')
       router.refresh()
     } catch (error: unknown) {
-      console.error('게시글 삭제 오류:', error)
       alert(
         error instanceof Error
           ? error.message
-          : '게시글 삭제 중 문제가 발생했습니다.',
+          : 'An error occurred while deleting the post.',
       )
     } finally {
       setIsDeleting(false)
@@ -80,7 +79,7 @@ export function SurveyCardHeader({
         </div>
         <div>
           <p className="text-sm font-medium">{username}</p>
-          <p className="text-xs text-gray-500">{date.split('T')[0]}</p>
+          <p className="text-xs text-gray-500">{date}</p>
         </div>
       </Link>
 
@@ -88,7 +87,7 @@ export function SurveyCardHeader({
       {userId === currentUserId && (
         <DropdownMenu>
           <DropdownMenuTrigger className="rounded p-1 hover:bg-gray-100">
-            <Ellipsis className="text-gray-500" />
+            <Ellipsis className="text-gray-500" size={20} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
@@ -99,11 +98,11 @@ export function SurveyCardHeader({
                 }}
                 className="block w-full"
               >
-                편집
+                Edit
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDelete} disabled={isDeleting}>
-              {isDeleting ? '삭제 중...' : '삭제'}
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

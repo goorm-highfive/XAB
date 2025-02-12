@@ -20,7 +20,7 @@ export function SurveyCardBody({
   return pathname === detailPagePath ? (
     // 현재 페이지라면 링크 없이 내용만 렌더링
     <div className="block">
-      <p className="mb-4 min-h-20 rounded-lg bg-gray-50 p-4 text-gray-800">
+      <p className="mb-4 flex min-h-20 items-center rounded-lg bg-gray-50 p-4 text-gray-800">
         {question}
       </p>
       {postImageUrl && (
@@ -36,7 +36,7 @@ export function SurveyCardBody({
   ) : (
     // 현재 페이지가 아니라면 링크로 감싸기
     <Link href={detailPagePath} className="block">
-      <p className="mb-4 min-h-20 rounded-lg bg-gray-50 p-4 text-gray-800">
+      <p className="mb-4 flex min-h-20 items-center rounded-lg bg-gray-50 p-4 text-gray-800">
         {question}
       </p>
       {postImageUrl && (

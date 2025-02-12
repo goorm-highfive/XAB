@@ -70,7 +70,10 @@ export async function GET() {
         ),
         comments (id),
         likes (user_id),
-        users (username)
+        users (
+          username,
+          profile_image
+        )
       `,
       )
       .in('user_id', followingIds) // 본인과 팔로우한 사용자의 포스트 가져오기
@@ -102,7 +105,6 @@ export async function GET() {
     // 5) 포스트별로 댓글 수와 좋아요 수, userLiked, userVote 설정
     const formattedPosts = await Promise.all(
       posts.map(async (post) => {
-        console.log(post.ab_tests)
         // 사용자의 투표 정보 확인 및 votesA, votesB 계산
         let userVote: 'A' | 'B' | null = null
         let votesA = 0
@@ -125,6 +127,7 @@ export async function GET() {
           post_id: post.id,
           post_user_id: post.user_id,
           username: post.users.username,
+          profile_image: post.users.profile_image || null,
           post_image_url: post.image_url,
           post_caption: post.caption,
           post_created_at: post.created_at.split('T')[0], // T 이후 제거

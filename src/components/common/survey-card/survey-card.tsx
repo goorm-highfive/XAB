@@ -161,6 +161,8 @@ export function SurveyCard({
         onLikeToggle={handleLikeToggle}
         totalVotes={(currentVotesA ?? 0) + (currentVotesB ?? 0)} // 기본값 0으로 설정
         abTestId={ab_test_id}
+        postCaption={post_caption}
+        username={username}
       />
     </Card>
   )
