@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { Bell } from 'lucide-react'
 import { NotifyItem } from '~/components/notify/notify-item'
 import { Button } from '~/components/ui/button'
@@ -14,11 +14,30 @@ import {
 } from '~/components/ui/custom-sheet'
 import { useNotifyStore } from '~/stores/notify-store'
 import EmptyState from '~/components/common/empty-state'
+import { fetchProfileImage } from '~/utils//fetch-profile-image'
+
+type UserProfileMap = {
+  [userId: string]: string | null
+}
 
 function NotificationButton() {
   const { notify } = useNotifyStore()
   const previewNotify = notify.slice(0, 10)
   const [open, setOpen] = useState(false)
+
+  const [profileMap, setProfileMap] = useState<UserProfileMap>({})
+
+  useEffect(() => {
+    const loadProfiles = async () => {
+      const senderIds = Array.from(
+        new Set(notify.map((n) => n.sender_is).filter(Boolean)),
+      )
+      const profiles = await fetchProfileImage(senderIds)
+      setProfileMap(profiles)
+    }
+
+    if (notify.length > 0) loadProfiles()
+  }, [notify])
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -44,6 +63,7 @@ function NotificationButton() {
                 item={item}
                 createdAt={item.created_at?.split('T')[0] || 'Unknown'}
                 closeSheet={() => setOpen(false)}
+                profileImage={profileMap[item.sender_is] || null}
               />
             ))
           ) : (

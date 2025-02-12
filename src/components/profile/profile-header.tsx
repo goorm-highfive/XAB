@@ -50,7 +50,6 @@ async function ProfileHeader({ profileId, currentUserId }: Props) {
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/* Avatar */}
       <div className="relative mb-4 h-[70px] w-[70px] overflow-hidden rounded-full">
-<<<<<<< HEAD
         {userData?.profile_image && (
           <Image
             fill
@@ -61,15 +60,6 @@ async function ProfileHeader({ profileId, currentUserId }: Props) {
             quality={75}
           />
         )}
-=======
-        <Image
-          fill
-          className="object-cover"
-          src={userData.profile_image || defaultProfile}
-          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-          alt="Profile Picture"
-        />
->>>>>>> 17b27f3 (refactor:  suggest-user, 팔로우 관련 기능 리팩토링 (#113))
       </div>
 
       {/* Header 상단 */}

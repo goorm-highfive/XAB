@@ -1,16 +1,19 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert'
 import { useNotifyStore } from '~/stores/notify-store'
 import type { Tables } from '~/types/supabase'
 import { createClient } from '~/utils/supabase/client'
+import defaultProfile from '~/assets/svgs/default-profile.svg'
 
 type NotifyItemProps = {
   item: Tables<'notifications'>
   createdAt: string
   closeSheet?: () => void
+  profileImage?: string | null
 }
 
 const handleIsRead = async (id: number) => {
@@ -20,7 +23,7 @@ const handleIsRead = async (id: number) => {
     .eq('id', id)
 }
 
-function NotifyItem({ item, createdAt }: NotifyItemProps) {
+function NotifyItem({ item, createdAt, profileImage }: NotifyItemProps) {
   const { is_read, action, id, post_id } = item
 
   const closeSheet = useNotifyStore((state) => state.closeSheet)
@@ -39,11 +42,18 @@ function NotifyItem({ item, createdAt }: NotifyItemProps) {
       className={`relative my-4 flex cursor-pointer justify-between p-4 pr-10 ${read ? 'opacity-50' : 'opacity-100'}`}
     >
       <div className="items-top flex">
-        <div className="mr-4">
-          <div className="h-12 w-12 rounded-full bg-gray-300" />
+        <div className="relative mb-4 mr-4 h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full">
+          <Image
+            fill
+            className="object-cover"
+            src={profileImage || defaultProfile}
+            sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
+            alt="프로필 이미지"
+            quality={75}
+          />
         </div>
         <div>
-          <AlertTitle className="text-base font-semibold">
+          <AlertTitle className="font-semibold leading-normal">
             <span className="font-normal">{action || 'undefined'}</span>
           </AlertTitle>
           <AlertDescription className="text-sm text-muted-foreground">

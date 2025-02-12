@@ -5,9 +5,15 @@ type NotifyGroupProps = {
   createdAt: string
   items: Tables<'notifications'>[]
   closeSheet?: () => void
+  profileMap: { [userId: string]: string | null }
 }
 
-function NotifyGroup({ items, createdAt, closeSheet }: NotifyGroupProps) {
+function NotifyGroup({
+  items,
+  createdAt,
+  closeSheet,
+  profileMap,
+}: NotifyGroupProps) {
   // 알림 발생 날짜에 맞게 묶어서 출력하기 위한 컴포넌트
   return (
     <div className="mx-auto max-w-xl pt-5">
@@ -19,6 +25,7 @@ function NotifyGroup({ items, createdAt, closeSheet }: NotifyGroupProps) {
             createdAt={createdAt}
             item={item}
             closeSheet={closeSheet}
+            profileImage={profileMap[item.sender_is] || null}
           />
         ))}
       </div>
