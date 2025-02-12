@@ -26,6 +26,7 @@ function NotificationButton() {
   const previewNotify = notify.slice(0, 10)
 
   const [profileMap, setProfileMap] = useState<UserProfileMap>({})
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     const loadProfiles = async () => {
@@ -39,8 +40,12 @@ function NotificationButton() {
     if (notify.length > 0) loadProfiles()
   }, [notify])
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
@@ -63,6 +68,7 @@ function NotificationButton() {
                 item={item}
                 createdAt={item.created_at?.split('T')[0] || 'Unknown'}
                 profileImage={profileMap[item.sender_is] || defaultProfile}
+                onClick={handleClose}
               />
             ))
           ) : (
@@ -74,7 +80,9 @@ function NotificationButton() {
         </div>
         <div className="pt-6">
           <Button className="h-12 w-full py-3 text-center" asChild>
-            <Link href="/notify">View All</Link>
+            <Link href="/notify" onClick={handleClose}>
+              View All
+            </Link>
           </Button>
         </div>
       </SheetContent>

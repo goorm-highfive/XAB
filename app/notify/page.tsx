@@ -15,7 +15,7 @@ type UserProfileMap = {
   [userId: string]: string | null
 }
 
-function NotifyPage() {
+function NotifyPage(onClick: () => void) {
   const { notify } = useNotifyStore()
   const [profileMap, setProfileMap] = useState<UserProfileMap>({})
 
@@ -51,6 +51,7 @@ function NotifyPage() {
               createdAt={createdAt}
               items={items}
               profileMap={profileMap}
+              onClick={onClick}
             />
           ))
         ) : (

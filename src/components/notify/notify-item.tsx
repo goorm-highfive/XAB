@@ -12,6 +12,7 @@ type NotifyItemProps = {
   item: Tables<'notifications'>
   createdAt: string
   profileImage?: string | null
+  onClick: () => void
 }
 
 const handleIsRead = async (id: number) => {
@@ -21,7 +22,12 @@ const handleIsRead = async (id: number) => {
     .eq('id', id)
 }
 
-function NotifyItem({ item, createdAt, profileImage }: NotifyItemProps) {
+function NotifyItem({
+  item,
+  createdAt,
+  profileImage,
+  onClick,
+}: NotifyItemProps) {
   const { is_read, action, id, post_id, sender_is } = item
   const [read, setRead] = useState(is_read)
 
@@ -34,10 +40,11 @@ function NotifyItem({ item, createdAt, profileImage }: NotifyItemProps) {
   const handleClick = async () => {
     setRead(true)
     await handleIsRead(id)
+    onClick()
   }
 
   return (
-    <Link href={getNotificationLink()}>
+    <Link href={getNotificationLink()} passHref>
       <Alert
         onClick={handleClick}
         className={`relative my-4 flex cursor-pointer justify-between p-4 pr-10 ${read ? 'opacity-50' : 'opacity-100'}`}
