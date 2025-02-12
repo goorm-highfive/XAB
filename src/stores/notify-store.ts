@@ -12,7 +12,6 @@ type NotifyStore = {
 const useNotifyStore = create<NotifyStore>((set, get) => ({
   notify: [],
   unsubscribe: null,
-  closeSheet: undefined,
   fetchNotify: async (userId: string) => {
     const supabase = createClient()
 
