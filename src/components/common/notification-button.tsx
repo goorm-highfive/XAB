@@ -14,7 +14,8 @@ import {
 } from '~/components/ui/custom-sheet'
 import { useNotifyStore } from '~/stores/notify-store'
 import EmptyState from '~/components/common/empty-state'
-import { fetchProfileImage } from '~/utils//fetch-profile-image'
+import { fetchProfileImage } from '~/utils/fetch-profile-image'
+import defaultProfile from '~/assets/svgs/default-profile.svg'
 
 type UserProfileMap = {
   [userId: string]: string | null
@@ -23,7 +24,6 @@ type UserProfileMap = {
 function NotificationButton() {
   const { notify } = useNotifyStore()
   const previewNotify = notify.slice(0, 10)
-  const [open, setOpen] = useState(false)
 
   const [profileMap, setProfileMap] = useState<UserProfileMap>({})
 
@@ -40,7 +40,7 @@ function NotificationButton() {
   }, [notify])
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
@@ -62,8 +62,7 @@ function NotificationButton() {
                 key={item.id}
                 item={item}
                 createdAt={item.created_at?.split('T')[0] || 'Unknown'}
-                closeSheet={() => setOpen(false)}
-                profileImage={profileMap[item.sender_is] || null}
+                profileImage={profileMap[item.sender_is] || defaultProfile}
               />
             ))
           ) : (
@@ -75,9 +74,7 @@ function NotificationButton() {
         </div>
         <div className="pt-6">
           <Button className="h-12 w-full py-3 text-center" asChild>
-            <Link href="/notify" onClick={() => setOpen(false)}>
-              View All
-            </Link>
+            <Link href="/notify">View All</Link>
           </Button>
         </div>
       </SheetContent>
