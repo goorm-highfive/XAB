@@ -1,6 +1,5 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import EmptyState from '~/components/common/empty-state'
 import { NotifyGroup } from '~/components/notify/notify-group'
@@ -16,15 +15,12 @@ type UserProfileMap = {
   [userId: string]: string | null
 }
 
-function NotifyPage(onClick: () => void) {
+function NotifyPage() {
   const { notify } = useNotifyStore()
   const [profileMap, setProfileMap] = useState<UserProfileMap>({})
-  const [expandedDates, setExpandedDates] = useState<{
-    [key: string]: boolean
-  }>({})
 
   const groupedData = notify.reduce<{
-    today: Tables<'notifications'>[]
+    today: GroupedNotify
     previous: GroupedNotify
   }>(
     (acc, curr) => {
@@ -32,14 +28,15 @@ function NotifyPage(onClick: () => void) {
       const createdAt = curr.created_at?.split('T')[0] || 'Unknown'
 
       if (createdAt === today) {
-        acc.today.push(curr)
+        if (!acc.today[createdAt]) acc.today[createdAt] = []
+        acc.today[createdAt].push(curr)
       } else {
         if (!acc.previous[createdAt]) acc.previous[createdAt] = []
         acc.previous[createdAt].push(curr)
       }
       return acc
     },
-    { today: [], previous: {} },
+    { today: {}, previous: {} },
   )
 
   useEffect(() => {
@@ -60,12 +57,10 @@ function NotifyPage(onClick: () => void) {
         <h2 className="mb-2 text-lg font-semibold">
           Today&apos;s Notifications
         </h2>
-        {groupedData.today.length > 0 ? (
+        {Object.keys(groupedData.today).length > 0 ? (
           <NotifyGroup
-            createdAt="Today"
-            items={groupedData.today}
+            groupedNotifications={groupedData.today}
             profileMap={profileMap}
-            onClick={onClick}
           />
         ) : (
           <EmptyState
@@ -77,36 +72,10 @@ function NotifyPage(onClick: () => void) {
       <section className="pt-14">
         <h2 className="mb-2 text-lg font-semibold">Previous Notifications</h2>
         {Object.keys(groupedData.previous).length > 0 ? (
-          <>
-            {Object.entries(groupedData.previous).map(([createdAt, items]) => (
-              <div key={createdAt} className="mb-4">
-                <div
-                  className="flex cursor-pointer items-center justify-between border-b py-2"
-                  onClick={() =>
-                    setExpandedDates((prev) => ({
-                      ...prev,
-                      [createdAt]: !prev[createdAt],
-                    }))
-                  }
-                >
-                  <span className="text-gray-800">{createdAt}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform ${expandedDates[createdAt] ? 'rotate-180' : ''}`}
-                  />
-                </div>
-                {expandedDates[createdAt] && (
-                  <div className="mt-2">
-                    <NotifyGroup
-                      createdAt={createdAt}
-                      items={items.slice(0, 5)}
-                      profileMap={profileMap}
-                      onClick={onClick}
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </>
+          <NotifyGroup
+            groupedNotifications={groupedData.previous}
+            profileMap={profileMap}
+          />
         ) : (
           <EmptyState
             title="No previous notifications."
