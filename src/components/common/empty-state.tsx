@@ -2,7 +2,7 @@ import { JSX } from 'react'
 import { Card, CardContent } from '~/components/ui/card'
 
 type EmptyProps = {
-  type: 'card' | 'default'
+  type?: 'card' | 'default'
   icon?: JSX.Element
   title: string
   subTitle?: string

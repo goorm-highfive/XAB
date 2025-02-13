@@ -54,8 +54,9 @@ async function ProfileHeader({ profileId, currentUserId }: Props) {
           fill
           className="object-cover"
           src={userData.profile_image || defaultProfile}
-          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-          alt="Profile Picture"
+          sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
+          alt="프로필 이미지"
+          quality={75}
         />
       </div>
 
