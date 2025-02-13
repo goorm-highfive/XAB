@@ -50,16 +50,14 @@ async function ProfileHeader({ profileId, currentUserId }: Props) {
     <div className="flex flex-col rounded-lg bg-white p-6 shadow">
       {/* Avatar */}
       <div className="relative mb-4 h-[70px] w-[70px] overflow-hidden rounded-full">
-        {userData?.profile_image && (
-          <Image
-            fill
-            className="object-cover"
-            src={userData.profile_image || defaultProfile}
-            sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
-            alt="프로필 이미지"
-            quality={75}
-          />
-        )}
+        <Image
+          fill
+          className="object-cover"
+          src={userData.profile_image || defaultProfile}
+          sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
+          alt="프로필 이미지"
+          quality={75}
+        />
       </div>
 
       {/* Header 상단 */}
