@@ -1,9 +1,6 @@
-import { headers } from 'next/headers'
-import { AppWindowMac } from 'lucide-react'
-
 import { SurveyCard } from '~/components/common/survey-card/survey-card'
-import EmptyState from '~/components/common/empty-state'
 import { fetchUserAuth } from '~/utils/fetch-user-auth'
+import { headers } from 'next/headers'
 
 // 게시글 데이터 타입 정의
 type Post = {
@@ -23,32 +20,32 @@ type Post = {
   ab_test_updated_at?: string | null
   comments_count: number
   likes_count: number
-  userLiked?: boolean // 'userLiked'를 선택적으로 포함
+  userLiked?: boolean
   userVote?: 'A' | 'B' | null
   votesA?: number
   votesB?: number
 }
 
 async function SurveyList({ type, id }: { type: string; id: string | null }) {
-  // Supabase 사용자 정보 가져오기
+  // 사용자 인증 및 헤더 정보 가져오기 (서버 컴포넌트)
   const authResult = await fetchUserAuth()
-  const clientHeaders = await headers() // 클라이언트가 보낸 헤더를 가져옴
-
+  const clientHeaders = await headers() // 클라이언트가 보낸 헤더
   const { user } = authResult || {}
 
   if (!user?.id) {
     return <p>사용자 인증이 필요합니다.</p>
   }
 
-  // API 기본 URL
+  // API 기본 URL (환경변수 또는 기본값)
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+  // 'feed' 타입일 경우 페이지네이션을 위한 쿼리 파라미터 추가 (초기 페이지: 1)
   const apiUrl =
     type === 'feed'
-      ? `${baseUrl}/api/posts/feed`
+      ? `${baseUrl}/api/posts/feed?page=1`
       : `${baseUrl}/api/profile/${id}/user-posts`
 
   try {
-    // Authorization 및 Cookie 헤더 값 확인 및 기본값 처리
+    // Authorization 및 Cookie 헤더 값 설정 (없으면 빈 문자열)
     const authorizationHeader = clientHeaders.get('Authorization') || ''
     const cookieHeader = clientHeaders.get('Cookie') || ''
 
@@ -56,26 +53,18 @@ async function SurveyList({ type, id }: { type: string; id: string | null }) {
     const res = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        Authorization: authorizationHeader, // 헤더 값을 string으로 전달
+        Authorization: authorizationHeader,
         Cookie: cookieHeader,
       },
     })
 
-    const { data }: { data: Post[] } = await res.json()
+    // API 응답은 { data: Post[]; nextPage: number | null } 형태로 가정
+    const { data, nextPage }: { data: Post[]; nextPage: number | null } =
+      await res.json()
+    console.log(data)
+    console.log('nextPage: ' + nextPage)
 
-    // 포스트가 없을 때
-    if (data.length === 0) {
-      return (
-        <EmptyState
-          type="card"
-          icon={<AppWindowMac size={32} />}
-          title="here are no posts yet"
-          subTitle="Start by creating a new survey! "
-        />
-      )
-    }
-
-    // 렌더링
+    // 렌더링: SurveyCard 컴포넌트를 이용해 게시글 표시
     return (
       <>
         {data.map((post) => (
