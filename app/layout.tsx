@@ -5,6 +5,7 @@ import { ClientSessionManager } from '~/components/auth/client-session-manager'
 import { Toaster } from '~/components/ui/sonner'
 import { NotificationProvider } from '~/components/notify/notify-provider'
 import { KakaoScript } from '~/components/common/kakao-script'
+import { ReactQueryProvider } from '~/components/common/react-query-provider'
 import '~/styles/globals.css'
 
 export const metadata: Metadata = {
@@ -29,15 +30,17 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="bg-gray-100 antialiased">
-        <ClientSessionManager />
-        <SiteHeader />
-        <NotificationProvider />
-        <main className="min-h-screen px-5 pb-20 pt-10" role="main">
-          <div className="mx-auto max-w-screen-2xl">{children}</div>
-        </main>
-        {modal}
-        <Toaster />
-        <KakaoScript />
+        <ReactQueryProvider>
+          <ClientSessionManager />
+          <SiteHeader />
+          <NotificationProvider />
+          <main className="min-h-screen px-5 pb-20 pt-10" role="main">
+            <div className="mx-auto max-w-screen-2xl">{children}</div>
+          </main>
+          {modal}
+          <Toaster />
+          <KakaoScript />
+        </ReactQueryProvider>
       </body>
     </html>
   )
