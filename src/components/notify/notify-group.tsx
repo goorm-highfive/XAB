@@ -1,22 +1,56 @@
+'use client'
+
+import { useState } from 'react'
 import { NotifyItem } from '~/components/notify/notify-item'
-import type { Tables } from '~/types/supabase'
+import { Tables } from '~/types/supabase'
+import { ChevronDown } from 'lucide-react'
 
 type NotifyGroupProps = {
-  createdAt: string
-  items: Tables<'notifications'>[]
+  groupedNotifications: { [date: string]: Tables<'notifications'>[] }
+  profileMap: { [userId: string]: string | null }
+  onClick?: () => void
 }
 
-function NotifyGroup({ createdAt, items }: NotifyGroupProps) {
-  // 알림 발생 날짜에 맞게 묶어서 출력하기 위한 컴포넌트
+function NotifyGroup({
+  groupedNotifications,
+  profileMap,
+  onClick,
+}: NotifyGroupProps) {
+  const [expandedDates, setExpandedDates] = useState<{
+    [key: string]: boolean
+  }>({})
+
   return (
-    <div className="mx-auto max-w-xl pt-5">
-      <p className="font-bold text-muted-foreground">{createdAt}</p>
-      <div>
-        {items.map((item) => (
-          <NotifyItem key={item.id} createdAt={createdAt} item={item} />
-        ))}
-      </div>
-    </div>
+    <>
+      {Object.entries(groupedNotifications).map(([date, notifications]) => (
+        <div key={date} className="mb-4">
+          <div
+            className="flex cursor-pointer items-center justify-between border-b py-2"
+            onClick={() =>
+              setExpandedDates((prev) => ({ ...prev, [date]: !prev[date] }))
+            }
+          >
+            <h3 className="text-sm font-semibold text-gray-600">{date}</h3>
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${expandedDates[date] ? 'rotate-180' : ''}`}
+            />
+          </div>
+          {expandedDates[date] && (
+            <div className="mt-2">
+              {notifications.map((item) => (
+                <NotifyItem
+                  key={item.id}
+                  createdAt={date}
+                  item={item}
+                  profileImage={profileMap[item.sender_is] || null}
+                  onClick={() => onClick}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </>
   )
 }
 
