@@ -1,7 +1,7 @@
 import { ProfileHeader } from '~/components/profile/profile-header'
-import { SurveyCardSkeleton } from '~/components/common/survey-card/surveycard-skeleton'
+
 import { Suspense } from 'react'
-import { SurveyList } from '~/components/home/survey-list'
+import { InfiniteSurveyList } from '~/components/home/infinite-survey-list'
 import { fetchUserAuth } from '~/utils/fetch-user-auth'
 import { ProfileHeaderSkeleton } from '~/components/profile/profile-header-skeleton'
 
@@ -17,9 +17,7 @@ async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
           <Suspense fallback={<ProfileHeaderSkeleton />}>
             <ProfileHeader profileId={id} currentUserId={currentUserId} />
           </Suspense>
-          <Suspense fallback={<SurveyCardSkeleton />}>
-            <SurveyList type="profile" id={id} />
-          </Suspense>
+          <InfiniteSurveyList type="profile" id={id} />
         </div>
       </div>
     </div>
