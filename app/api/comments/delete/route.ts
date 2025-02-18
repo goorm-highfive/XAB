@@ -5,12 +5,12 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
 
   try {
-    const { id } = await request.json()
+    const { commentId } = await request.json()
 
     const { data, error } = await supabase
       .from('comments')
       .update({ is_delete: true, content: 'The comment has been deleted' })
-      .eq('id', id)
+      .eq('id', commentId)
 
     if (error) {
       console.error('Error inserting comment:', error.message)

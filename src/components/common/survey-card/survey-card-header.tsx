@@ -72,7 +72,7 @@ export function SurveyCardHeader({
             fill
             className="object-cover"
             src={userProfileImage || defaultProfile}
-            sizes="(max-width: 640px) 40px, (max-width: 1024px) 80px, 120px"
+            sizes="40px"
             alt={`${username}의 프로필 이미지`}
             quality={75}
             priority

@@ -16,22 +16,19 @@ import { Textarea } from '~/components/ui/textarea'
 import { ModalAlert } from '~/components/common/modal-alert'
 import { Comment } from '~/types/comment'
 import defaultProfile from '~/assets/svgs/default-profile.svg'
+import { useComments } from '~/hooks/use-comments'
 
 type SurveyCommentProps = {
   comment: Comment
   currentUserId?: string
-  handleCommentLikeToggle: (id: number) => void
 }
 
-export function SurveyComment({
-  comment,
-  currentUserId,
-  handleCommentLikeToggle,
-}: SurveyCommentProps) {
+export function SurveyComment({ comment, currentUserId }: SurveyCommentProps) {
   const {
     id,
     dept,
     username,
+    profileImage,
     user_id,
     content,
     created_at,
@@ -41,6 +38,9 @@ export function SurveyComment({
     post_id,
     is_delete,
   } = comment
+  const { likeCommentMutation, deleteCommentMutation, editCommentMutation } =
+    useComments(post_id)
+
   const date = created_at.split('T')[0]
   const [reply, setReply] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -50,8 +50,6 @@ export function SurveyComment({
 
   // 현재 댓글 작성자와 로그인한 사용자가 동일한지 확인
   const isAuthorized = () => {
-    console.log(`currentId: ${currentUserId}`)
-    console.log(`userId: ${user_id}`)
     if (currentUserId !== user_id) {
       toast.error(
         `You are not allowed to edit or delete other user's comments.`,
@@ -72,17 +70,10 @@ export function SurveyComment({
   }
 
   const handleEditSubmit = async () => {
-    const response = await fetch('/api/comments/edit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: id,
-        content: editContent,
-      }),
+    await editCommentMutation.mutateAsync({
+      commentId: id,
+      content: editContent,
     })
-
-    const result = await response.json()
-    if (!result.success) throw new Error(result.error)
 
     setIsEditing(false)
     toast.success('The comment has been successfully updated')
@@ -102,24 +93,44 @@ export function SurveyComment({
     if (!isAuthorized()) return
 
     try {
-      const response = await fetch('/api/comments/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+      await deleteCommentMutation.mutateAsync({
+        commentId: id,
       })
-      const result = await response.json()
-      if (!result.success) throw new Error(result.error)
-
       toast.success(`The comment has been successfully deleted.`)
     } catch {
       toast.error('An error occurred while deleting the comment.')
     }
   }
 
+  const handleCommentLikeToggle = async () => {
+    if (likeCommentMutation.isPending) return
+    try {
+      const res = await likeCommentMutation.mutateAsync({
+        commentId: id,
+      })
+      toast.success(
+        res.liked
+          ? `You liked ${username}'s comment`
+          : `You unliked ${username}'s comment`,
+      )
+    } catch (error) {
+      toast.error('Failed to like.')
+      console.error(error)
+    }
+  }
+
   return (
     <div className="mb-4 mt-2 flex">
-      <div className="mr-3 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
-        <Image src={defaultProfile} alt="" />
+      <div className="relative mr-3 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+        <Image
+          fill
+          className="object-cover"
+          src={(!is_delete && profileImage) || defaultProfile}
+          sizes="32px"
+          alt={`${username}의 프로필 이미지`}
+          quality={75}
+          priority
+        />
       </div>
       <div className="flex-auto">
         <div className="flex justify-between rounded-lg bg-primary-foreground px-5 py-3">
@@ -183,7 +194,7 @@ export function SurveyComment({
             <button
               type="button"
               className="mr-4 flex items-center justify-start"
-              onClick={() => handleCommentLikeToggle(id)}
+              onClick={() => handleCommentLikeToggle()}
             >
               <Heart
                 size={14}
@@ -209,11 +220,7 @@ export function SurveyComment({
 
         {replies?.map((reply) => (
           <div key={reply.id} className="ml-5 mt-5 rounded-lg">
-            <SurveyComment
-              comment={reply}
-              currentUserId={currentUserId}
-              handleCommentLikeToggle={handleCommentLikeToggle}
-            />
+            <SurveyComment comment={reply} currentUserId={currentUserId} />
           </div>
         ))}
 

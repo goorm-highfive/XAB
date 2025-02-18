@@ -3,7 +3,6 @@ import { createClient } from '~/utils/supabase/server'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
-  console.log('좋아요 API 호출 시작')
 
   // 사용자 인증 확인
   const { data: user, error: userError } = await supabase.auth.getUser()
@@ -14,10 +13,7 @@ export async function POST(req: NextRequest) {
   }
 
   const userId = user.user.id
-  console.log(`User ID: ${userId}`)
-
   const { commentId } = await req.json()
-  console.log(`Comment ID: ${commentId}`)
 
   // 좋아요 상태 확인
   const { data: existingLike, error: likeError } = await supabase

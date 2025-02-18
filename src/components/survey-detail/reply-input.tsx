@@ -6,7 +6,6 @@ import { Send } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { toast } from 'sonner'
 
 import defaultProfile from '~/assets/svgs/default-profile.svg'
@@ -19,6 +18,7 @@ import {
   FormControl,
   FormMessage,
 } from '~/components/ui/form'
+import { useComments } from '~/hooks/use-comments'
 
 // 답글 입력 스키마 정의
 const replySchema = z.object({
@@ -38,44 +38,28 @@ type ReplyInputProps = {
   onReplySubmit: () => void // 답글 작성 후 부모 컴포넌트에서 reply 창을 닫기 위한 콜백
 }
 
-function ReplyInput({
-  username,
-  postId,
-  replyId,
-  dept,
-  onReplySubmit,
-}: ReplyInputProps) {
+function ReplyInput({ username, postId, replyId, dept }: ReplyInputProps) {
   const form = useForm<ReplyFormValues>({
     resolver: zodResolver(replySchema),
     defaultValues: { replyContent: '' },
   })
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const { addCommentMutation } = useComments(postId)
 
   const onSubmit = async (values: ReplyFormValues) => {
-    if (!isSubmitting) {
-      setIsSubmitting(true)
+    if (addCommentMutation.isPending) return
 
-      const response = await fetch('/api/comments/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          post_id: postId,
-          content: values.replyContent,
-          parent_id: replyId,
-          dept: (dept || 1) + 1,
-        }),
+    try {
+      await addCommentMutation.mutateAsync({
+        content: values.replyContent,
+        parent_id: replyId,
+        dept: (dept || 1) + 1,
       })
-
-      const result = await response.json()
-      if (!result.success) throw new Error(result.error)
-
-      setTimeout(() => {
-        form.reset()
-        toast.success('The comment has been successfully added.')
-        setIsSubmitting(false)
-        onReplySubmit() // 답글 작성 후 reply 창 닫기
-      }, 500)
+      toast.success('Comment added successfully.')
+      form.reset()
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to add comment.')
     }
   }
 
