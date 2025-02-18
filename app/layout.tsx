@@ -5,6 +5,7 @@ import { ClientSessionManager } from '~/components/auth/client-session-manager'
 import { Toaster } from '~/components/ui/sonner'
 import { NotificationProvider } from '~/components/notify/notify-provider'
 import { KakaoScript } from '~/components/common/kakao-script'
+import Providers from '~/components/providers' // 위에서 생성한 Providers 컴포넌트
 import '~/styles/globals.css'
 
 export const metadata: Metadata = {
@@ -32,12 +33,15 @@ export default function RootLayout({
         <ClientSessionManager />
         <SiteHeader />
         <NotificationProvider />
-        <main className="min-h-screen px-5 pb-20 pt-10" role="main">
-          <div className="mx-auto max-w-screen-2xl">{children}</div>
-        </main>
-        {modal}
-        <Toaster />
-        <KakaoScript />
+        {/* Providers로 감싸서 React Query Provider를 적용 */}
+        <Providers>
+          <main className="min-h-screen px-5 pb-20 pt-10" role="main">
+            <div className="mx-auto max-w-screen-2xl">{children}</div>
+          </main>
+          {modal}
+          <Toaster />
+          <KakaoScript />
+        </Providers>
       </body>
     </html>
   )

@@ -1,11 +1,10 @@
 import { Suspense } from 'react'
-import { SurveyList } from '~/components/home/survey-list'
 import { ProfileSection } from '~/components/home/profile-section'
 import { SuggestSection } from '~/components/home/suggest-section'
 import { NewSurveyButton } from '~/components/home/new-survey-button'
-import { SurveyCardSkeleton } from '~/components/common/survey-card/surveycard-skeleton'
 import { ProfileSkeleton } from '~/components/home/profile-skeleton'
 import { SuggestSkeleton } from '~/components/home/suggest-section-skeleton'
+import { InfiniteSurveyList } from '~/components/home/infinite-survey-list'
 
 export default function HomePage() {
   return (
@@ -17,9 +16,7 @@ export default function HomePage() {
 
         <div className="flex-1 space-y-6">
           <NewSurveyButton />
-          <Suspense fallback={<SurveyCardSkeleton />}>
-            <SurveyList type="feed" id={null} />
-          </Suspense>
+          <InfiniteSurveyList type="feed" id={null} />
         </div>
         <Suspense fallback={<SuggestSkeleton />}>
           <SuggestSection />
