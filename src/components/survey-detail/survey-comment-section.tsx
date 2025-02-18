@@ -26,7 +26,7 @@ export function CommentsSection({
   const commentsData = data?.comments || []
   const commentsCount = data?.comments_count || 0
 
-  // Supabase 리얼타임 구독을 통해 해당 게시글의 댓글을 실시간 업데이트합니다.
+  // Supabase realtime -> 실시간 구독을 위해 사용, React Query로는 다른 사용자들의 댓글 추가, 수정 등이 실시간 반영 X
   useRealtimeComments(postId)
 
   return (

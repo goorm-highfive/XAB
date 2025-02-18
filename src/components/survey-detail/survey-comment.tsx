@@ -28,6 +28,7 @@ export function SurveyComment({ comment, currentUserId }: SurveyCommentProps) {
     id,
     dept,
     username,
+    profileImage,
     user_id,
     content,
     created_at,
@@ -120,8 +121,16 @@ export function SurveyComment({ comment, currentUserId }: SurveyCommentProps) {
 
   return (
     <div className="mb-4 mt-2 flex">
-      <div className="mr-3 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
-        <Image src={defaultProfile} alt="" />
+      <div className="relative mr-3 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+        <Image
+          fill
+          className="object-cover"
+          src={(!is_delete && profileImage) || defaultProfile}
+          sizes="32px"
+          alt={`${username}의 프로필 이미지`}
+          quality={75}
+          priority
+        />
       </div>
       <div className="flex-auto">
         <div className="flex justify-between rounded-lg bg-primary-foreground px-5 py-3">

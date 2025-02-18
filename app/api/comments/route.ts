@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     const { data: commentData, error: commentsError } = await supabase
       .from('comments')
       .select(
-        'id, content, created_at, user_id, parent_id, dept, post_id, is_delete, users(username)',
+        'id, content, created_at, user_id, parent_id, dept, post_id, is_delete, users(username, profile_image)',
       )
       .eq('post_id', postId)
       .order('parent_id', { ascending: true }) // 부모 댓글이 먼저 정렬되도록 추가
@@ -40,6 +40,7 @@ export async function GET(request: NextRequest) {
 
     const comments = commentData.map(({ users, ...comment }) => ({
       username: users.username,
+      profileImage: users.profile_image,
       ...comment,
     }))
 
@@ -71,6 +72,7 @@ export async function GET(request: NextRequest) {
     // 댓글을 트리 구조로 변환
     type Comment = Tables<'comments'> & {
       username: string
+      profileImage: string | null
       likeCount: number
       userLiked: boolean
       replies: Comment[]
