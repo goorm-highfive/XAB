@@ -5,9 +5,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
 
   try {
-    const { id, content } = await request.json()
+    const { commentId, content } = await request.json()
 
-    if (!id || !content) {
+    if (!commentId || !content) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }, // Bad Request
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase
       .from('comments')
       .update({ content })
-      .eq('id', id)
+      .eq('id', commentId)
       .single()
 
     if (error) {

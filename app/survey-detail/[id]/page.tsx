@@ -1,7 +1,8 @@
 //survey-detail/[id]/page
+import { headers } from 'next/headers'
+
 import { SurveyCard } from '~/components/common/survey-card/survey-card'
 import { CommentsSection } from '~/components/survey-detail/survey-comment-section'
-import { headers } from 'next/headers'
 import { fetchUserAuth } from '~/utils/fetch-user-auth'
 
 export default async function SurveyDetailPage({
@@ -13,7 +14,6 @@ export default async function SurveyDetailPage({
     // 사용자 인증 정보 가져오기
     const authResult = await fetchUserAuth()
     const clientHeaders = await headers()
-
     const { user } = authResult || {}
 
     if (!user?.id) {
@@ -21,12 +21,13 @@ export default async function SurveyDetailPage({
     }
 
     const { id } = await params
+
     // API URL 설정
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-    const apiUrl = `${baseUrl}/api/survey-detail/${id}`
+    const postApiUrl = `${baseUrl}/api/survey-detail/${id}`
 
     // 데이터 요청
-    const response = await fetch(apiUrl, {
+    const postResponse = await fetch(postApiUrl, {
       method: 'GET',
       headers: {
         Authorization: clientHeaders.get('Authorization') || '',
@@ -34,25 +35,24 @@ export default async function SurveyDetailPage({
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.statusText}`)
+    if (!postResponse.ok) {
+      throw new Error(`API 요청 실패: ${postResponse.statusText}`)
     }
 
-    const { data } = await response.json()
+    const { data: postData } = await postResponse.json()
 
     return (
       <div className="min-h-screen bg-gray-100">
         <div className="p-6">
           <div className="mx-auto mt-6 max-w-3xl space-y-6">
             {/* 게시물 컴포넌트 */}
-            <SurveyCard currentUserId={user.id} {...data} />
+            <SurveyCard currentUserId={user.id} {...postData} />
 
             {/* 댓글 섹션 */}
             <CommentsSection
-              initialComments={data.comments}
               currentUserId={user.id}
-              currentUserName={data.currentUserName}
-              postId={data.post_id}
+              currentUserName={postData.currentUserName}
+              postId={postData.post_id}
             />
           </div>
         </div>

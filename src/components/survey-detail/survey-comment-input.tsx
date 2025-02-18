@@ -1,18 +1,17 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Send } from 'lucide-react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { addComment } from '~/actions/comment-action' // 서버 액션 임포트
 
 import defaultProfile from '~/assets/svgs/default-profile.svg'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Form, FormField, FormItem, FormControl } from '~/components/ui/form'
+import { useComments } from '~/hooks/use-comments'
 
 const commentSchema = z.object({
   comment: z
@@ -28,25 +27,27 @@ type SurveyCommentInputProps = {
 }
 
 function SurveyCommentInput({ postId }: SurveyCommentInputProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { addCommentMutation } = useComments(postId)
+
   const form = useForm<CommentFormValues>({
     resolver: zodResolver(commentSchema),
     defaultValues: { comment: '' },
   })
 
   const handleSubmit = async (data: CommentFormValues) => {
-    if (!isSubmitting) {
-      setIsSubmitting(true)
-      try {
-        await addComment(postId, data.comment)
-        toast.success('Comment added successfully.')
-        form.reset()
-      } catch (error) {
-        console.log(error)
-        toast.error('Failed to add comment.')
-      } finally {
-        setIsSubmitting(false)
-      }
+    if (addCommentMutation.isPending) return
+
+    try {
+      await addCommentMutation.mutateAsync({
+        content: data.comment,
+        parent_id: null,
+        dept: 0,
+      })
+      toast.success('Comment added successfully.')
+      form.reset()
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to add comment.')
     }
   }
 

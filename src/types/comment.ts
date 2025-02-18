@@ -6,3 +6,9 @@ export type Comment = Tables<'comments'> & {
   userLiked: boolean
   replies: Comment[]
 }
+
+export type addComment = {
+  content: string
+  parent_id: number | null
+  dept: number | null
+}

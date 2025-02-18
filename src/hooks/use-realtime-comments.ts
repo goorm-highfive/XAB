@@ -1,19 +1,10 @@
 // useRealtimeComments.ts
 import { useEffect } from 'react'
 import { createClient } from '~/utils/supabase/client'
-import { Tables } from '~/types/supabase'
-import { useCommentsStore } from '~/stores/use-comment-store'
+import { useQueryClient } from '@tanstack/react-query'
 
-/**
- * useRealtimeComments
- * @param postId - 해당 포스트의 id
- * @param currentUserName - 현재 로그인한 사용자의 이름 (INSERT 이벤트 처리 시 사용)
- */
-export const useRealtimeComments = (
-  postId: number,
-  currentUserName: string,
-) => {
-  const { addComment, deleteComment, updateComment } = useCommentsStore()
+export const useRealtimeComments = (postId: number) => {
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const supabase = createClient()
@@ -27,25 +18,8 @@ export const useRealtimeComments = (
           table: 'comments',
           filter: `post_id=eq.${postId}`,
         },
-        (payload) => {
-          const { eventType } = payload
-          const newComment = payload.new as Tables<'comments'>
-          const oldComment = payload.old as Tables<'comments'>
-
-          switch (eventType) {
-            case 'INSERT':
-              // 해당 게시글의 댓글 트리 업데이트
-              addComment(postId, newComment, currentUserName)
-              break
-            case 'UPDATE':
-              updateComment(postId, newComment)
-              break
-            case 'DELETE':
-              deleteComment(postId, oldComment.id)
-              break
-            default:
-              break
-          }
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['comments', postId] })
         },
       )
       .subscribe()
@@ -53,5 +27,5 @@ export const useRealtimeComments = (
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [postId, addComment, deleteComment, updateComment, currentUserName])
+  }, [postId, queryClient])
 }

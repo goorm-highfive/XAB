@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Tables } from '~/types/supabase'
 import { createClient } from '~/utils/supabase/server'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  console.log('API Route Params:', params)
-
   const supabase = await createClient()
   const { id } = await params
   const postId = id
@@ -73,82 +70,10 @@ export async function GET(
       .single()
     if (postError) throw new Error(postError.message)
 
-    // 3) 댓글 데이터 가져오기
-    const { data: commentData, error: commentsError } = await supabase
-      .from('comments')
-      .select(
-        'id, content, created_at, user_id, parent_id, dept, post_id, is_delete, users(username)',
-      )
-      .eq('post_id', postId)
-      .order('parent_id', { ascending: true }) // 부모 댓글이 먼저 정렬되도록 추가
-      .order('created_at', { ascending: true }) // 같은 부모 내에서 시간순 정렬
-    if (commentsError) throw new Error(commentsError.message)
+    // 3) 댓글 개수 데이터 가져오기
+    const commentsCount = post.comments ? post.comments.length : 0
 
-    const commentsCount = commentData ? commentData.length : 0
-
-    const comments = commentData.map(({ users, ...comment }) => ({
-      username: users.username,
-      ...comment,
-    }))
-
-    // 4) 댓글 좋아요 데이터 가져오기
-    const { data: likes, error: likeError } = await supabase
-      .from('comment_likes')
-      .select('comment_id, user_id')
-      .in(
-        'comment_id',
-        comments.map((comment) => comment.id),
-      )
-    if (likeError) throw new Error(likeError.message)
-
-    const likeCounts = (likes || []).reduce<Record<number, number>>(
-      (acc, like) => {
-        acc[like.comment_id] = (acc[like.comment_id] || 0) + 1
-        return acc
-      },
-      {},
-    )
-
-    const userLikes = new Set(
-      (likes || [])
-        .filter((like) => like.user_id === userId)
-        .map((like) => like.comment_id),
-    )
-
-    // 5) 댓글 데이터를 트리 구조로 변환
-    // 댓글을 트리 구조로 변환
-    type Comment = Tables<'comments'> & {
-      username: string
-      likeCount: number
-      userLiked: boolean
-      replies: Comment[]
-    }
-    const commentMap: Record<number, Comment> = {}
-    const roots: Comment[] = []
-
-    // 먼저 모든 댓글을 commentMap에 등록
-
-    comments.forEach((comment) => {
-      commentMap[comment.id] = {
-        ...comment,
-        likeCount: likeCounts[comment.id] || 0,
-        userLiked: userLikes.has(comment.id),
-        replies: [],
-      }
-    })
-
-    // 부모 → 자식 순서로 정렬된 후이므로, 대댓글을 올바른 부모에 추가 가능
-    comments.forEach((comment) => {
-      if (comment.parent_id === null) {
-        roots.push(commentMap[comment.id])
-      } else {
-        if (commentMap[comment.parent_id]) {
-          commentMap[comment.parent_id].replies.push(commentMap[comment.id])
-        }
-      }
-    })
-
-    // 6) 좋아요 및 AB 테스트 데이터 처리
+    // 4) 좋아요 데이터
     const { data: userLikesData, error: userLikesError } = await supabase
       .from('likes')
       .select('post_id')
@@ -161,6 +86,7 @@ export async function GET(
 
     const userLikedPostIds = userLikesData?.length ? [postId] : []
 
+    // 5) AB 테스트 데이터
     let userVote: 'A' | 'B' | null = null
     let votesA = 0
     let votesB = 0
@@ -178,7 +104,7 @@ export async function GET(
       ).length
     }
 
-    // 7) 데이터 포맷 구성
+    // 6) 데이터 포맷 구성
     const formattedData = {
       post_id: post.id,
       post_user_id: post.user_id,
@@ -194,7 +120,6 @@ export async function GET(
       description_b: post.ab_tests?.[0]?.description_b || null,
       ab_test_created_at: post.ab_tests?.[0]?.created_at.split('T')[0] || null,
       ab_test_updated_at: post.ab_tests?.[0]?.updated_at.split('T')[0] || null,
-      comments: roots, // 트리 구조로 변환된 댓글
       comments_count: commentsCount,
       likes_count: post.likes ? post.likes.length : 0,
       userLikedPostIds,
