@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation' // useParams 가져오기
 
 function FollowersPage() {
   const { id } = useParams() // URL에서 id 추출
-  console.log('id: ' + id)
   return (
     <UserListModal
       title="Followers"

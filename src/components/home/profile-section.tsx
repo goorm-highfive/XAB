@@ -50,7 +50,7 @@ async function ProfileSection() {
       <div className="sticky top-[92px] hidden w-72 flex-col gap-4 xl:flex">
         <Link href={profileUrl} className="block">
           {/* 내부 Card에서는 fixed 클래스를 제거 */}
-          <Card className="w-64 cursor-pointer transition-transform hover:scale-105">
+          <Card className="w-64 cursor-pointer transition-transform">
             <CardHeader className="items-center gap-5">
               <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full">
                 <Image
