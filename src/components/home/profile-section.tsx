@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { headers } from 'next/headers'
 import {
   Card,
@@ -41,42 +42,45 @@ async function ProfileSection() {
     }
 
     const profile = await response.json()
+    const profileUrl = `/profile/${user.id}` // 이동할 프로필 페이지 경로
 
     return (
-      <Card className="static top-[92px] mb-6 w-full lg:sticky lg:w-72">
-        <CardHeader className="items-center gap-5">
-          <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full">
-            <Image
-              className="object-cover"
-              src={profile.profile_image || defaultProfile}
-              alt={`@${profile.username}`}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              fill
-              priority
-            />
-          </div>
-          <div className="flex flex-col items-center gap-1.5 text-center">
-            <CardTitle>{profile.username}</CardTitle>
-            <CardDescription>
-              {profile.bio || 'No bio available'}
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-4">
-          <div className="flex flex-col items-center gap-1 text-center">
-            <span className="font-bold">{profile.followingCount}</span>
-            <span className="text-sm text-muted-foreground">Following</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 text-center">
-            <span className="font-bold">{profile.followerCount}</span>
-            <span className="text-sm text-muted-foreground">Followers</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 text-center">
-            <span className="font-bold">{profile.postCount}</span>
-            <span className="text-sm text-muted-foreground">Posts</span>
-          </div>
-        </CardContent>
-      </Card>
+      <Link href={profileUrl} className="block">
+        <Card className="static top-[92px] mb-6 w-full cursor-pointer transition-transform hover:scale-105 lg:sticky lg:w-72">
+          <CardHeader className="items-center gap-5">
+            <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full">
+              <Image
+                className="object-cover"
+                src={profile.profile_image || defaultProfile}
+                alt={`@${profile.username}`}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                fill
+                priority
+              />
+            </div>
+            <div className="flex flex-col items-center gap-1.5 text-center">
+              <CardTitle>{profile.username}</CardTitle>
+              <CardDescription>
+                {profile.bio || 'No bio available'}
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="grid grid-cols-3 gap-4">
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="font-bold">{profile.followingCount}</span>
+              <span className="text-sm text-muted-foreground">Following</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="font-bold">{profile.followerCount}</span>
+              <span className="text-sm text-muted-foreground">Followers</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="font-bold">{profile.postCount}</span>
+              <span className="text-sm text-muted-foreground">Posts</span>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
     )
   } catch (error) {
     console.error('ProfileSection 렌더링 중 에러:', error)

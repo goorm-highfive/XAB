@@ -9,7 +9,9 @@ function SearchBar({ onSearch }: { onSearch: (query: string) => void }) {
   const [query, setQuery] = useState('')
 
   const handleSearch = () => {
-    onSearch(query) // 부모 컴포넌트로 검색어 전달
+    if (query.trim() !== '') {
+      onSearch(query) // 부모 컴포넌트로 검색어 전달
+    }
   }
 
   return (
@@ -20,6 +22,12 @@ function SearchBar({ onSearch }: { onSearch: (query: string) => void }) {
         placeholder="Search..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault() // 폼 제출 방지
+            handleSearch()
+          }
+        }}
         className="flex-1 border-none px-4 py-2 focus:border-transparent focus:outline-none focus:ring-0"
       />
       {/* Button */}
