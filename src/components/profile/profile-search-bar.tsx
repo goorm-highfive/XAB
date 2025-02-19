@@ -15,8 +15,8 @@ function SearchBar({ onSearch }: { onSearch: (query: string) => void }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-lg items-center overflow-hidden rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-      {/* Input */}
+    <div className="mx-auto flex w-full max-w-lg items-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm">
+      {/* Input (✅ 모든 포커스 효과 제거) */}
       <Input
         type="text"
         placeholder="Search..."
@@ -28,14 +28,14 @@ function SearchBar({ onSearch }: { onSearch: (query: string) => void }) {
             handleSearch()
           }
         }}
-        className="flex-1 border-none px-4 py-2 focus:border-transparent focus:outline-none focus:ring-0"
+        className="flex-1 border-none bg-transparent px-4 py-2 outline-none focus:border-none focus:outline-none focus:ring-0 focus-visible:ring-0"
       />
       {/* Button */}
       <Button
         variant="ghost"
         size="icon"
         onClick={handleSearch}
-        className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-0"
+        className="border-none text-gray-500 outline-none hover:text-gray-700 focus:ring-0"
       >
         <Search className="h-5 w-5" />
       </Button>
