@@ -53,20 +53,19 @@ function UserFollowList({ users }: { users: UserListResponseItem[] }) {
           >
             <Link
               href={`/profile/${user.id}`}
-              aria-label={`${user.name}의 프로필로 이동`}
+              aria-label={`${user.username}의 프로필로 이동`}
             >
               <div className="flex items-center gap-4">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gray-200">
                   <Image
                     src={user.profile_image || defaultProfile.src}
-                    alt={`${user.name}'s profile`}
+                    alt={`${user.username}'s profile`}
                     layout="fill"
                     objectFit="cover"
                   />
                 </div>
                 <div>
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-sm text-gray-500">{user.username}</p>
+                  <p className="font-medium">{user.username}</p>
                 </div>
               </div>
             </Link>
