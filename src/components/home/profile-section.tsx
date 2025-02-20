@@ -48,9 +48,9 @@ async function ProfileSection() {
     return (
       // 외부 컨테이너에 sticky 클래스를 적용하여 스크롤 시 고정되게 함
       <div className="sticky top-[92px] hidden w-72 flex-col gap-4 xl:flex">
-        <Link href={profileUrl} className="block">
-          {/* 내부 Card에서는 fixed 클래스를 제거 */}
-          <Card className="w-64 cursor-pointer transition-transform">
+        {/* 내부 Card에서는 fixed 클래스를 제거 */}
+        <Card className="w-64 cursor-pointer transition-transform">
+          <Link href={profileUrl} className="block">
             <CardHeader className="items-center gap-5">
               <div className="relative h-[70px] w-[70px] overflow-hidden rounded-full">
                 <Image
@@ -69,22 +69,32 @@ async function ProfileSection() {
                 </CardDescription>
               </div>
             </CardHeader>
-            <CardContent className="grid grid-cols-3 gap-4">
+          </Link>
+
+          <CardContent className="grid grid-cols-3 gap-4">
+            <Link
+              href={`/followings?id=${user.id}`}
+              className="hover:underline"
+            >
               <div className="flex flex-col items-center gap-1 text-center">
-                <span className="font-bold">{profile.followingCount}</span>
-                <span className="text-sm text-muted-foreground">Following</span>
+                <div className="font-bold">{profile.followingCount}</div>
+                <div className="text-sm text-muted-foreground">Following</div>
               </div>
+            </Link>
+
+            <Link href={`/followers?id=${user.id}`} className="hover:underline">
               <div className="flex flex-col items-center gap-1 text-center">
-                <span className="font-bold">{profile.followerCount}</span>
-                <span className="text-sm text-muted-foreground">Followers</span>
+                <div className="font-bold">{profile.followerCount}</div>
+                <div className="text-sm text-muted-foreground">Followers</div>
               </div>
-              <div className="flex flex-col items-center gap-1 text-center">
-                <span className="font-bold">{profile.postCount}</span>
-                <span className="text-sm text-muted-foreground">Posts</span>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
+            </Link>
+
+            <div className="flex flex-col items-center gap-1 text-center">
+              <div className="font-bold">{profile.postCount}</div>
+              <div className="text-sm text-muted-foreground">Posts</div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   } catch (error) {

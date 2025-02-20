@@ -1,9 +1,11 @@
 'use client'
+
 import { UserListModal } from '~/components/profile/profile-user-list-modal'
-import { useParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 function FollowingsPage() {
-  const { id } = useParams()
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
 
   return (
     <UserListModal

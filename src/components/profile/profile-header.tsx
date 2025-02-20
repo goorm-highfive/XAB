@@ -92,10 +92,10 @@ async function ProfileHeader({ profileId, currentUserId }: Props) {
 
       {/* Stats */}
       <div className="mt-4 flex gap-6 text-sm text-gray-700">
-        <Link href={`/profile/${id}/followings`} className="hover:underline">
+        <Link href={`/followings?id=${id}`} className="hover:underline">
           <strong>{userData.followingCount || 0}</strong> Following
         </Link>
-        <Link href={`/profile/${id}/followers`} className="hover:underline">
+        <Link href={`/followers?id=${id}`} className="hover:underline">
           <strong>{userData.followerCount || 0}</strong> Followers
         </Link>
         <span>
