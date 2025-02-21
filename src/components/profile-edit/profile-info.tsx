@@ -44,7 +44,9 @@ function ProfileInfo({ user }: ProfileInfoProps) {
       if (error) throw new Error('프로필 업데이트 실패')
 
       toast.success('프로필 정보가 성공적으로 업데이트되었습니다!')
-      router.refresh()
+
+      // ✅ `/profile/{user.id}`로 이동
+      router.push(`/profile/${user!.id}`)
     } catch (error: unknown) {
       if (error instanceof Error) toast.error(error.message)
     }

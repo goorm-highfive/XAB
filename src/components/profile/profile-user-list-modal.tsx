@@ -42,7 +42,7 @@ function UserListModal({ title, apiEndpoint }: UserListModalProps) {
         if (!response.ok) throw new Error('Failed to fetch data')
 
         const data: UserListResponseItem[] = await response.json()
-        console.log(data)
+        console.log('Fetched followers data:', data) // 👈 API 응답 확인
 
         setUsers(data)
         setFilteredUsers(data)
@@ -58,7 +58,7 @@ function UserListModal({ title, apiEndpoint }: UserListModalProps) {
   const handleSearch = (query: string) => {
     setFilteredUsers(
       users.filter((user) =>
-        user.name.toLowerCase().includes(query.toLowerCase()),
+        user.username.toLowerCase().includes(query.toLowerCase()),
       ),
     )
   }

@@ -1,11 +1,12 @@
 'use client'
 
 import { UserListModal } from '~/components/profile/profile-user-list-modal'
-import { useParams } from 'next/navigation' // useParams 가져오기
+import { useSearchParams } from 'next/navigation'
 
 function FollowersPage() {
-  const { id } = useParams() // URL에서 id 추출
-  console.log('id: ' + id)
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+
   return (
     <UserListModal
       title="Followers"

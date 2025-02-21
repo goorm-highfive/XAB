@@ -160,12 +160,6 @@ export async function GET(request: Request) {
     const hasNextPage = posts.length === limit
     const nextPage = hasNextPage ? page + 1 : undefined
 
-    console.log('api부분', {
-      data: formattedPosts,
-      currentPage: page,
-      nextPage,
-      hasNextPage,
-    })
     return NextResponse.json(
       { data: formattedPosts, currentPage: page, nextPage, hasNextPage },
       { status: 200 },
